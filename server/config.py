@@ -2,6 +2,10 @@ from flask import Flask
 from flask_cors import CORS
 import pickle
 import numpy as np
+import nltk
+from nltk.stem.porter import PorterStemmer
+
+ps = PorterStemmer()
 
 app = Flask(__name__)
 
@@ -11,6 +15,8 @@ CORS(app)
 
 dataset = pickle.load(open('../model/dataset.pkl', 'rb'))
 similarity = pickle.load(open('../model/model.pkl', 'rb'))
+vectorizer = pickle.load(open('../model/vectorizer.pkl', 'rb'))
+p_dataset = pickle.load(open('../model/p_dataset.pkl', 'rb'))
 
 problems = list(map(lambda x: {
         "id": x[0],

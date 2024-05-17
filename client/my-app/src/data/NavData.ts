@@ -18,5 +18,10 @@ export const NavData = [
         id: 4,
         name : "Recommend",
         path: "/recommend"
+    },
+    {
+        id: 5,
+        name: "Guess",
+        path: "/guess"
     }
 ]
