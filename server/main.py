@@ -2,11 +2,12 @@
 # ---- domain name ----  ---- end point ----
 
 from flask import request, jsonify
-from config import app, p_dataset, vectorizer, dataset, similarity, problems
+from config import app, rating_predictor, p_dataset, vectorizer, dataset, similarity, problems
 from config import ps
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import requests
 
 # THIS IS KNOWN AS A DECORATOR
 # Decorators start with @
@@ -86,6 +87,66 @@ def recommendX():
     return jsonify({
         "recommended_problems": response
     }), 200  
+
+
+@app.route('/predict_my_rating/<string:username>', methods=["GET"])
+def predict_my_rating(username):
+    def fetch_user_data(username):
+        url = "https://leetcode.com/graphql"
+        query = """
+        query {
+            userContestRanking(username: "%s") {
+                attendedContestsCount
+                rating
+                globalRanking
+                totalParticipants
+                topPercentage    
+            }
+            userContestRankingHistory(username: "%s") {
+                attended
+                trendDirection
+                problemsSolved
+                totalProblems
+                finishTimeInSeconds
+                rating
+                ranking
+                contest {
+                    title
+                    startTime
+                }
+            }
+        }
+        """ % (username, username)
+        
+        response = requests.post(url, json={'query': query})
+        data = response.json()
+        return data
+    
+    data = fetch_user_data(username)
+    contests = data['data']['userContestRankingHistory']
+    ratings = []
+    for contest in contests:
+        if contest['attended'] == True:
+            ratings.append(contest['rating'])
+    
+    if(len(ratings) < 10):
+        return jsonify({'message': 'Please participate in atleast 10 contests.'}), 401
+    
+    ratings = ratings[-10:]
+
+    forecast = []
+    for i in range(0, 5, 1):
+        next_rating = rating_predictor.predict([ratings])
+        forecast.append(next_rating[0][0])
+        ratings.pop(0)
+        ratings.append(next_rating[0][0])
+    
+    return jsonify({
+        'user': data,
+        'forecast': forecast
+    }), 200
+    
+    
 
 if __name__ == "__main__":
     # code inside this if block will

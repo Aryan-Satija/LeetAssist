@@ -25,7 +25,7 @@ export function SearchBar({problems, value, setValue} : {problems: problemInterf
   const [open, setOpen] = React.useState(false)
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="text-slate-300 rounded-md">
+      <PopoverTrigger asChild className="text-slate-800 border-black rounded-md">
         <Button
           variant="outline"
           role="combobox"
@@ -38,9 +38,9 @@ export function SearchBar({problems, value, setValue} : {problems: problemInterf
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0 text-slate-300 rounded-md bg-black bg-opacity-40 backdrop-blur-md">
+      <PopoverContent className="w-[300px] p-0 text-slate-800 rounded-md bg-slate-100 bg-opacity-40 backdrop-blur-md">
         <Command>
-          <CommandInput placeholder="Enter Problem Name" />
+          <CommandInput className="text-slate-800"/>
           <CommandEmpty>No problem found.</CommandEmpty>
           <CommandGroup>
             {problems.map((problem) => (

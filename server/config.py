@@ -17,6 +17,7 @@ dataset = pickle.load(open('../model/dataset.pkl', 'rb'))
 similarity = pickle.load(open('../model/model.pkl', 'rb'))
 vectorizer = pickle.load(open('../model/vectorizer.pkl', 'rb'))
 p_dataset = pickle.load(open('../model/p_dataset.pkl', 'rb'))
+rating_predictor = pickle.load(open('../model/rating_predicting_model.pkl', 'rb'))
 
 problems = list(map(lambda x: {
         "id": x[0],
