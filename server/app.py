@@ -12,11 +12,17 @@ import requests
 # THIS IS KNOWN AS A DECORATOR
 # Decorators start with @
 # they take another function as input and extend the functionality of the function written beneath it without making changes to the code. 
-@app.route("/problems", methods=['GET'])
+@app.route("/", methods=['GET'])
 def get_problems():
     return jsonify({
-        "problems": problems
+        "message" : "Server is running"    
     }), 200
+    
+# @app.route("/problems", methods=['GET'])
+# def get_problems():
+#     return jsonify({
+#         "problems": problems
+#     }), 200
 
 # @app.route("/recommend/<int:problem_id>", methods=["GET"])
 # def recommend(problem_id):
