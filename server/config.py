@@ -1,8 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 import pickle
-import numpy as np
-import nltk
 from nltk.stem.porter import PorterStemmer
 
 ps = PorterStemmer()
@@ -13,11 +11,20 @@ app = Flask(__name__)
 # To allow our server to accept requests from other origins.
 CORS(app)
 
-dataset = pickle.load(open('../model/dataset.pkl', 'rb'))
-similarity = pickle.load(open('../model/model.pkl', 'rb'))
-vectorizer = pickle.load(open('../model/vectorizer.pkl', 'rb'))
-p_dataset = pickle.load(open('../model/p_dataset.pkl', 'rb'))
-rating_predictor = pickle.load(open('../model/rating_predicting_model.pkl', 'rb'))
+with open('../model/dataset.pkl', 'rb') as f:
+    dataset = pickle.load(f)
+
+with open('../model/model.pkl', 'rb') as f:
+    similarity = pickle.load(f)
+
+with open('../model/vectorizer.pkl', 'rb') as f:
+    vectorizer = pickle.load(f)
+
+with open('../model/p_dataset.pkl', 'rb') as f:
+    p_dataset = pickle.load(f)
+
+with open('../model/rating_predicting_model.pkl', 'rb') as f:
+    rating_predictor = pickle.load(f)
 
 problems = list(map(lambda x: {
         "id": x[0],
