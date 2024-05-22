@@ -1,28 +1,31 @@
 #     localhost:5000      /get_questions
 # ---- domain name ----  ---- end point ----
 
+# from flask import request, jsonify
+# from config import app, rating_predictor, p_dataset, vectorizer, dataset, similarity, problems
+# from get_problems import get_problems
+# from config import ps
+# import pandas as pd
+# import numpy as np
+# from sklearn.metrics.pairwise import cosine_similarity
+# import requests
+
 from flask import request, jsonify
-from config import app, rating_predictor, p_dataset, vectorizer, dataset, similarity, problems
-from config import ps
-import pandas as pd
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-import requests
+from config import app
+from get_problems import get_problems
 
 # THIS IS KNOWN AS A DECORATOR
 # Decorators start with @
 # they take another function as input and extend the functionality of the function written beneath it without making changes to the code. 
 @app.route("/", methods=['GET'])
-def get_problems():
+def home():
     return jsonify({
         "message" : "Server is running"    
     }), 200
     
-# @app.route("/problems", methods=['GET'])
-# def get_problems():
-#     return jsonify({
-#         "problems": problems
-#     }), 200
+@app.route("/problems", methods=['GET'])
+def problems():
+    return get_problems()
 
 # @app.route("/recommend/<int:problem_id>", methods=["GET"])
 # def recommend(problem_id):
