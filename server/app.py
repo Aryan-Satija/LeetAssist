@@ -2,6 +2,7 @@
 # ---- domain name ----  ---- end point ----
 
 from flask import request, jsonify
+from config import app
 from config import app, rating_predictor, p_dataset, vectorizer, dataset, similarity, problems
 from config import ps
 import pandas as pd
@@ -12,11 +13,18 @@ import requests
 # THIS IS KNOWN AS A DECORATOR
 # Decorators start with @
 # they take another function as input and extend the functionality of the function written beneath it without making changes to the code. 
+@app.route("/", methods=['GET'])
+def home():
+    return jsonify({
+        "message" : "Server is running"    
+    }), 200
+    
 @app.route("/problems", methods=['GET'])
 def get_problems():
     return jsonify({
         "problems": problems
     }), 200
+    
 
 @app.route("/recommend/<int:problem_id>", methods=["GET"])
 def recommend(problem_id):
@@ -48,7 +56,7 @@ def recommend(problem_id):
 @app.route("/recommendX",methods=["POST"])
 def recommendX():
     tags = request.json.get("tags")
-    print(tags)
+    
     filtered_tags = []
     for tag in tags:
         if ps.stem(tag) not in filtered_tags:
@@ -145,9 +153,6 @@ def predict_my_rating(username):
         'user': data,
         'forecast': forecast
     }), 200
-    
-    
-
 if __name__ == "__main__":
     # code inside this if block will
     # start to execute if we run this file.
