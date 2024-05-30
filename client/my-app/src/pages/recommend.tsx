@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SearchBar } from '../components/SearchBar'
-
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export interface problemInterface{
     id: number,
     name: string,
@@ -24,6 +25,7 @@ const Recommend = () => {
     const [recProblems, setRecProblems] = useState<problemInterface[]>([])
     const [RecommendX, setRecommendX] = useState<boolean>(false)
     const [text, setText] = useState("");
+    const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
     useEffect(()=>{
         (async()=>{
@@ -34,6 +36,8 @@ const Recommend = () => {
     }, [])
 
     const getRecommendations = async() => {
+        const id = toast.loading("Please Wait");
+        setIsDisabled(true);
         if(RecommendX){
             console.log(text.split(' '))
             const response = await fetch(`${process.env.REACT_APP_BASE_URL}/recommendX`, {
@@ -47,7 +51,11 @@ const Recommend = () => {
             setRecProblems(data.recommended_problems)
         }
         else{
-            if(problem === "") return;
+            if(problem === "") {
+                setIsDisabled(false);
+                toast.update(id, {render: "Select a Problem", type: "error", isLoading: false, autoClose: 3000})
+                return
+            };
     
             const problem_id = problems.find((prob)=>{
                 return prob.name.toLowerCase() === problem
@@ -60,6 +68,8 @@ const Recommend = () => {
                 setRecProblems(data.recommended_problems)
             }
         }
+        setIsDisabled(false);
+        toast.update(id, {render: "Task successfull", type: "success", isLoading: false, autoClose: 3000})
     }
   return (
     <div className='relative bg-white min-h-[100vh] overflow-x-hidden'>
@@ -79,10 +89,10 @@ const Recommend = () => {
                         <div >
                             <SearchBar problems={problems} value={problem} setValue={setProblem}/>
                         </div>
-                        <button onClick={getRecommendations} className='border-slate-600 border-2 p-2 rounded-md bg-gradient-to-r  from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
+                        <button disabled={isDisabled} onClick={getRecommendations} className='border-slate-600 border-2 p-2 rounded-md bg-gradient-to-r  from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
                             Recommend Me
                         </button>
-                        <button onClick={()=>{setRecommendX(true)}} className='text-center bg-black p-2 rounded-md from-slate-800 bg-opacity-60 text-slate-200 backdrop-blur-md hover:scale-95 duration-200'> 
+                        <button disabled={isDisabled} onClick={()=>{setRecommendX(true)}} className='text-center bg-black p-2 rounded-md from-slate-800 bg-opacity-60 text-slate-200 backdrop-blur-md hover:scale-95 duration-200'> 
                             Problem Not on Leetcode?
                         </button>
                     </div>
@@ -103,10 +113,10 @@ const Recommend = () => {
                             </p>
                             <textarea className='w-[400px] rounded-md p-4 resize-none bg-stone-100 bg-opacity-40 backdrop-blur-md outline-none text-zinc-900 shadow-sm' onChange={(e )=>{ setText(e.target.value) }} rows={8} />
                         </div>
-                        <button onClick={getRecommendations} className='border-black border-2 p-2 rounded-md bg-gradient-to-r from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
+                        <button disabled={isDisabled} onClick={getRecommendations} className='border-black border-2 p-2 rounded-md bg-gradient-to-r from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
                             Recommend Me
                         </button>
-                        <button onClick={()=>{setRecommendX(false)}} className='text-center bg-black p-2 rounded-md from-slate-800 bg-opacity-60 text-slate-200 backdrop-blur-md hover:scale-95 duration-200'> 
+                        <button disabled={isDisabled} onClick={()=>{setRecommendX(false)}} className='text-center bg-black p-2 rounded-md from-slate-800 bg-opacity-60 text-slate-200 backdrop-blur-md hover:scale-95 duration-200'> 
                             Problem on Leetcode?
                         </button>
                     </div>

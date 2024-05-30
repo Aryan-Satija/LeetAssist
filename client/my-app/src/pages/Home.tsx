@@ -1,5 +1,5 @@
-import React from 'react'
-import {Brain, BrainCircuit, CodeXml, Laptop} from 'lucide-react'
+import {Brain, BrainCircuit, CodeXml, Laptop} from 'lucide-react';
+import Footer from '../components/footer';
 const Home = () => {
   return (
     <div className='relative bg-white min-h-[100vh] overflow-x-hidden'>
@@ -37,6 +37,30 @@ const Home = () => {
                 </div>
             </div>
         </div>
+        <div className='w-[60%] min-w-[320px] mt-[4rem] mx-auto flex flex-col gap-4'>
+            <div className='text-center text-2xl bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent font-semibold'>Predicting Leetcode Questions</div>
+            <p className='text-center text-slate-600'>
+                Stuck on a problem and seeking more practice? LeetAssist recommends similar LeetCode questions tailored to your current challenge, helping you strengthen your problem-solving skills efficiently.
+            </p>
+        </div>
+        <div className='mx-[1rem] md:mx-[4rem] my-[4rem] shadow-xl shadow-slate-500'>
+            <video autoPlay loop muted>
+                <source src={'https://res.cloudinary.com/dinouvzsz/video/upload/v1717065704/echo.mp4'}/>
+            </video>
+        </div>
+
+        <div className='w-[60%] min-w-[320px] mt-[4rem] mx-auto flex flex-col gap-4'>
+            <div className='text-center text-2xl bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent font-semibold'>Predict Your Next LeetCode Rating</div>
+            <p className='text-center text-slate-600'>
+                Unlock the future of your coding journey with LeetForesight! Our AI-powered model predicts your next LeetCode contest rating, helping you strategize and improve your performance.
+            </p>
+        </div>
+        <div className='mx-[1rem] md:mx-[4rem] my-[4rem] shadow-xl shadow-slate-500'>
+            <video muted autoPlay loop> 
+                <source src={'https://res.cloudinary.com/dinouvzsz/video/upload/v1717068447/echo_rating.mp4'}/>
+            </video>
+        </div>
+        <Footer/>
     </div>
   )
 }

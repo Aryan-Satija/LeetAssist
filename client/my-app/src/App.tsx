@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Recommend from "./pages/recommend";
 import Rating from "./pages/Rating";
 import Contact from "./pages/Contact";
+import Footer from "./components/footer";
 function App() {
   return (
     <div>
