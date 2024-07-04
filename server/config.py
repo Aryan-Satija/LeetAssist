@@ -26,6 +26,12 @@ with open('../model/p_dataset.pkl', 'rb') as f:
 with open('../model/rating_predicting_model.pkl', 'rb') as f:
     rating_predictor = pickle.load(f)
 
+with open('../model/codeforces_dataset.pkl', 'rb') as f:
+    cf_dataset = pickle.load(f)
+
+with open('../model/features.pkl', 'rb') as f:
+    features = pickle.load(f)
+
 problems = list(map(lambda x: {
         "id": x[0],
         "name": x[1],

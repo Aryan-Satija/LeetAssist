@@ -3,12 +3,14 @@
 
 from flask import request, jsonify
 from config import app
-from config import app, rating_predictor, p_dataset, vectorizer, dataset, similarity, problems
+from config import app, rating_predictor, p_dataset, vectorizer, dataset, similarity, problems, features, cf_dataset
 from config import ps
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import requests
+
+vectors = []
 
 # THIS IS KNOWN AS A DECORATOR
 # Decorators start with @
@@ -153,9 +155,51 @@ def predict_my_rating(username):
         'user': data,
         'forecast': forecast
     }), 200
+
+@app.route("/getTags",methods=["POST"]) 
+def getTags():
+    problem_statement = request.json.get("problem")
+    
+    freq = {}
+    for word in problem_statement.split():
+        word = ps.stem(word.lower())
+        if word in freq:
+            freq[word] += 1
+        else:
+            freq[word] = 1
+    vector = []
+    for feature in features:
+        if feature in freq:
+            vector.append(freq[feature])
+        else:
+            vector.append(0)
+
+    similarity = []
+    for original_vector in vectors:
+        similarity.append(cosine_similarity([vector, original_vector])[0][1])
+        
+    recommended_index, simi = 0, similarity[0]
+
+    id = 0
+    for val in similarity: 
+        if val > simi:
+            simi = val
+            recommended_index = id
+        id += 1
+    
+    topics = []
+    for col, val in cf_dataset.iloc[recommended_index].items():
+        if col != 'contest' and col != 'problem_statement' and val == 1:
+            topics.append(col)
+    
+    return jsonify({
+        'topics': topics,
+        'certainty': simi*100 
+    }), 200
 if __name__ == "__main__":
     # code inside this if block will
     # start to execute if we run this file.
     # In python if we import something from some file, then the file from which we import is run first.
     # hence this if block prevents this code to be executed again and again in each import.
+    vectors = vectorizer.fit_transform(cf_dataset['problem_statement']).toarray()
     app.run(debug = True)
