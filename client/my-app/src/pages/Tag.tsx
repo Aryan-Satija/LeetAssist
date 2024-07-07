@@ -4,6 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const Tags = () => {
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [text, setText] = useState<String>("");
+    const [tags, setTags] = useState<String[]>([])
+    const [certainty, setCertainty] = useState<Number>(0)
     const getTags = async() => {
         const id = toast.loading("Please Wait");
         setIsDisabled(true);
@@ -15,7 +17,8 @@ const Tags = () => {
             })
         });
         const data = await response.json()
-        console.log(data);
+        setTags(data?.topics)
+        setCertainty(data?.certainty)
         setIsDisabled(false);
         toast.update(id, {render: "Task successfull", type: "success", isLoading: false, autoClose: 3000})
     }
@@ -48,8 +51,26 @@ const Tags = () => {
                     <textarea className='w-[400px] rounded-md p-4 resize-none bg-stone-100 bg-opacity-40 backdrop-blur-md outline-none text-zinc-900 shadow-sm' onChange={(e )=>{ setText(e.target.value) }} rows={8} />
                 </div>
                 <button disabled={isDisabled} onClick={()=>{getTags()}} className='border-black border-2 p-2 rounded-md bg-gradient-to-r from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
-                    Recommend Me
+                    Predict
                 </button>
+                <div>
+                    {
+                        tags.length > 0 && (<div className='flex flex-col items-center gap-2'>
+                            <div className='flex flex-row items-center gap-4'>
+                                {
+                                    tags.map((tag, index) => {
+                                        return (<div key={index} className='text-2xl capitalize bg-green-400/80 backdrop-blur-md p-2 rounded-md cursor-pointer'>
+                                            {
+                                                tag
+                                            }
+                                        </div>)
+                                    })
+                                }    
+                            </div>
+                            <p>Certainty : {certainty.toString()} %</p>
+                        </div>)
+                    }
+                </div>
             </div>
         </>
     </div>
