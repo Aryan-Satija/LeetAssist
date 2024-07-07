@@ -21,5 +21,10 @@ export const NavData = [
         name: "Rating",
         path: "/rating",
         icon: ""
+    },
+    {
+        id: 5,
+        name: "Tag Predictor",
+        path: '/tags'
     }
 ]

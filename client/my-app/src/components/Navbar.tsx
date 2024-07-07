@@ -4,7 +4,7 @@ import logo from '../assests/logoX.png'
 import 'video-react/dist/video-react.css';
 const Navbar = () => {
   return (
-    <div className='sticky z-20 bg-opacity-100 backdrop-blur-md top-0 bg-slate-100 shadow-xl flex items-center py-2 px-4 justify-between'>
+    <div className='sticky z-20 backdrop-blur-md top-0 bg-slate-100/10 shadow-xl flex items-center py-2 px-4 justify-between'>
         <div>
             <img src={logo} className='h-14 w-14 rounded-full'/>
         </div>

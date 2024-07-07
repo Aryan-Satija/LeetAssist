@@ -5,7 +5,7 @@ import About from "./pages/About";
 import Recommend from "./pages/recommend";
 import Rating from "./pages/Rating";
 import Contact from "./pages/Contact";
-import Footer from "./components/footer";
+import Tags from "./pages/Tag";
 function App() {
   return (
     <div>
@@ -16,6 +16,7 @@ function App() {
           <Route path={"/recommend"} element={<Recommend/>}/>
           <Route path={"/rating"} element={<Rating/>}/>
           <Route path={"/contact-us"} element={<Contact/>}/>
+          <Route path={"/tags"} element={<Tags/>}/>
         </Routes>
     </div>
   );

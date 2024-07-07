@@ -105,7 +105,7 @@ const Recommend = () => {
                             Stuck on a problem and seeking more practice? 
                         </p>
                         <p className='mx-auto bg-gradient-to-r text-center  from-slate-800 to-slate-600 inline-block text-transparent bg-clip-text'> 
-                            CodeComrade's AI powered model - ECHO got you covered ! 
+                            LeetAssist's AI powered model - ECHO got you covered ! 
                         </p>
                         <div className='flex flex-col gap-4 items-center justify-center'>
                             <p className='text-slate-800'>
