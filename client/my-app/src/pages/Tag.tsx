@@ -7,7 +7,7 @@ const Tags = () => {
     const getTags = async() => {
         const id = toast.loading("Please Wait");
         setIsDisabled(true);
-        const response = await fetch(`https://leetassist.onrender.com//getTags`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/getTags`, {
             method: 'post',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify({
@@ -39,7 +39,7 @@ const Tags = () => {
                     </p>
                     <p className='text-slate-800'>
                         2. Predict Category
-                        Click on the ‘Predict’ button to analyze the question.
+                        Click on the 'Predict' button to analyze the question.
                     </p>
                     <p className='text-slate-800'>
                         3. Get Instant Results

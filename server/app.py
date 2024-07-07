@@ -174,12 +174,12 @@ def getTags():
         else:
             vector.append(0)
     
-    print(vectors)
+    vectors = vectorizer.fit_transform(cf_dataset['problem_statement']).toarray()
     
     similarity = []
     for original_vector in vectors:
         similarity.append(cosine_similarity([vector, original_vector])[0][1])
-        
+
     recommended_index, simi = 0, similarity[0]
 
     id = 0
@@ -203,5 +203,4 @@ if __name__ == "__main__":
     # start to execute if we run this file.
     # In python if we import something from some file, then the file from which we import is run first.
     # hence this if block prevents this code to be executed again and again in each import.
-    vectors = vectorizer.fit_transform(cf_dataset['problem_statement']).toarray()
     app.run(debug = True)
