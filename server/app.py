@@ -173,7 +173,9 @@ def getTags():
             vector.append(freq[feature])
         else:
             vector.append(0)
-
+    
+    print(vectors)
+    
     similarity = []
     for original_vector in vectors:
         similarity.append(cosine_similarity([vector, original_vector])[0][1])

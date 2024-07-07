@@ -4,7 +4,21 @@ import 'react-toastify/dist/ReactToastify.css';
 const Tags = () => {
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
     const [text, setText] = useState<String>("");
-
+    const getTags = async() => {
+        const id = toast.loading("Please Wait");
+        setIsDisabled(true);
+        const response = await fetch(`https://leetassist.onrender.com//getTags`, {
+            method: 'post',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify({
+                "problem": text
+            })
+        });
+        const data = await response.json()
+        console.log(data);
+        setIsDisabled(false);
+        toast.update(id, {render: "Task successfull", type: "success", isLoading: false, autoClose: 3000})
+    }
     return (
     <div className='relative bg-white min-h-[100vh] overflow-x-hidden'>
         <div className='bg-[#74d36f] absolute top-[-6rem] -z-5 right-[-15rem] h-[31.25rem] w-[31.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
@@ -33,7 +47,7 @@ const Tags = () => {
                     </p>
                     <textarea className='w-[400px] rounded-md p-4 resize-none bg-stone-100 bg-opacity-40 backdrop-blur-md outline-none text-zinc-900 shadow-sm' onChange={(e )=>{ setText(e.target.value) }} rows={8} />
                 </div>
-                <button disabled={isDisabled} onClick={()=>{}} className='border-black border-2 p-2 rounded-md bg-gradient-to-r from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
+                <button disabled={isDisabled} onClick={()=>{getTags()}} className='border-black border-2 p-2 rounded-md bg-gradient-to-r from-slate-800 to-slate-600 font-bold inline-block text-transparent bg-clip-text hover:scale-95 duration-200'>
                     Recommend Me
                 </button>
             </div>
