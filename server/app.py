@@ -183,7 +183,8 @@ def getTags():
         })   
         
     return jsonify({
-        "recommended_problems": response
+        "tags": response,
+        "certainty": (problem_inds[0][1]*100)
     }), 200  
 if __name__ == "__main__":
     # code inside this if block will

@@ -13,12 +13,23 @@ const Tags = () => {
             method: 'post',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify({
-                "problem": text
+                "tags": text.split(' ')
             })
         });
-        const data = await response.json()
-        setTags(data?.topics)
-        setCertainty(data?.certainty)
+        const data = await response.json();
+        if(data?.tags){
+            const topictags : string[] = []
+            data?.tags.forEach((obj: {"related_topics" : string[]})=>{
+                obj.related_topics.forEach((topic)=>{
+                    if(!topictags.includes(topic)){
+                        topictags.push(topic)
+                    }
+                })
+            })
+            setTags(topictags);
+            setCertainty(Math.floor(data.certainty))
+        }
+
         setIsDisabled(false);
         toast.update(id, {render: "Task successfull", type: "success", isLoading: false, autoClose: 3000})
     }
