@@ -21,7 +21,7 @@ const Tags = () => {
             const topictags : string[] = []
             data?.tags.forEach((obj: {"related_topics" : string[]})=>{
                 obj.related_topics.forEach((topic)=>{
-                    if(!topictags.includes(topic)){
+                    if(topictags.length < 4 && (!topictags.includes(topic))){
                         topictags.push(topic)
                     }
                 })
