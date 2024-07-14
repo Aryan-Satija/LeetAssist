@@ -158,46 +158,33 @@ def predict_my_rating(username):
 
 @app.route("/getTags",methods=["POST"]) 
 def getTags():
-    problem_statement = request.json.get("problem")
+    tags = request.json.get("tags")
     
-    freq = {}
-    for word in problem_statement.split():
-        word = ps.stem(word.lower())
-        if word in freq:
-            freq[word] += 1
-        else:
-            freq[word] = 1
-    vector = []
-    for feature in features:
-        if feature in freq:
-            vector.append(freq[feature])
-        else:
-            vector.append(0)
-    
-    vectors = vectorizer.fit_transform(cf_dataset['problem_statement']).toarray()
-    
-    similarity = []
-    for original_vector in vectors:
-        similarity.append(cosine_similarity([vector, original_vector])[0][1])
+    filtered_tags = []
+    for tag in tags:
+        if ps.stem(tag) not in filtered_tags:
+            filtered_tags.append(ps.stem(tag))
 
-    recommended_index, simi = 0, similarity[0]
-
-    id = 0
-    for val in similarity: 
-        if val > simi:
-            simi = val
-            recommended_index = id
-        id += 1
+    new_df = p_dataset.copy(deep = True)
     
-    topics = []
-    for col, val in cf_dataset.iloc[recommended_index].items():
-        if col != 'contest' and col != 'problem_statement' and val == 1:
-            topics.append(col)
+    new_df.loc[len(p_dataset.index)] = [-1, 'unknown', " ".join(filtered_tags)]
     
+    vectors = vectorizer.fit_transform(new_df['tags']).toarray()
+    simi = cosine_similarity(vectors)
+    
+    problem_inds = sorted(list(enumerate(simi[1825])), key = lambda x : x[1], reverse = True)[1 : 6]
+    
+    response = []
+    
+    for prob_ind in problem_inds:
+        x = dataset.loc[prob_ind[0]]
+        response.append({
+            "related_topics": x.iloc[13].split(',') if isinstance(x.iloc[13], str) else [],
+        })   
+        
     return jsonify({
-        'topics': topics,
-        'certainty': simi*100 
-    }), 200
+        "recommended_problems": response
+    }), 200  
 if __name__ == "__main__":
     # code inside this if block will
     # start to execute if we run this file.
