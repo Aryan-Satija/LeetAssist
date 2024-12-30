@@ -20,4 +20,6 @@ from echo.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('echo/recommend/<problem_id>', recommend),
+    path('echo/ratings/<handle_name>', rating),
+    path('echo/recommendFromText', recommendFromText)
 ]
