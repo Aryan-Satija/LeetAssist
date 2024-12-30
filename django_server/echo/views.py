@@ -114,6 +114,7 @@ def recommendFromText(request):
     filtered_tags = []
     
     for tag in tags:
+        tag = tag.lower()
         filtered_tags.append(ps.stem(tag))
 
     new_df = p_dataset.copy(deep = True)
@@ -143,3 +144,32 @@ def recommendFromText(request):
         })   
         
     return JsonResponse(response, safe = False)
+
+@csrf_exempt
+def tagsPredictor(request):
+    tags = json.loads(request.body).get('tags')
+    filtered_tags = []
+    
+    for tag in tags.split(' '):
+        tag = tag.lower()
+        filtered_tags.append(ps.stem(tag))
+
+    new_df = p_dataset.copy(deep = True)
+    
+    new_df.loc[len(p_dataset.index)] = [-1, 'unknown', " ".join(filtered_tags)]
+    
+    vectors = vectorizer.fit_transform(new_df['tags']).toarray()
+    simi = cosine_similarity(vectors)
+    
+    problem_inds = sorted(list(enumerate(simi[len(p_dataset.index)])), key = lambda x : x[1], reverse = True)[1 : 6]
+    
+    response = {}
+    
+    for prob_ind in problem_inds:
+        x = dataset.loc[prob_ind[0]]
+        response[prob_ind[0]] = {
+            'certainty': prob_ind[1],
+            'tags': x[5]
+        }  
+        
+    return JsonResponse(response)
