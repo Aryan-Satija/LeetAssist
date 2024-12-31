@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from echo.views import *
+from blogs.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('echo/recommend/<problem_id>', recommend),
     path('echo/ratings/<handle_name>', rating),
     path('echo/recommendFromText', recommendFromText),
-    path('echo/tags', tagsPredictor)
+    path('echo/tags', tagsPredictor),
 ]
