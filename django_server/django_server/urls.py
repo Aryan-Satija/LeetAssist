@@ -21,7 +21,8 @@ from blogs.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('echo/recommend/<problem_id>', recommend),
-    path('echo/ratings/<handle_name>', rating),
+    path('echo/ratings/cf/<handle_name>', rating),
+    path('echo/ratings/lc/<handle_name>', predict_my_rating),
     path('echo/recommendFromText', recommendFromText),
     path('echo/tags', tagsPredictor),
 ]

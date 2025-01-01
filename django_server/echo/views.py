@@ -24,7 +24,7 @@ with open('../model/vectorizer.pkl', 'rb') as f:
 with open('../model/p_dataset_ver_3.pkl', 'rb') as f:
     p_dataset = pickle.load(f)
 
-with open('../model/rating_predicting_model.pkl', 'rb') as f:
+with open('../model/rating_predicting_model_new.pkl', 'rb') as f:
     rating_predictor = pickle.load(f)
 
 with open('../model/codeforces_dataset.pkl', 'rb') as f:
@@ -173,3 +173,63 @@ def tagsPredictor(request):
         }  
         
     return JsonResponse(response)
+
+def predict_my_rating(request, handle_name):
+    def fetch_user_data(handle_name):
+        url = "https://leetcode.com/graphql"
+        query = """
+        query {
+            userContestRanking(username: "%s") {
+                attendedContestsCount
+                rating
+                globalRanking
+                totalParticipants
+                topPercentage    
+            }
+            userContestRankingHistory(username: "%s") {
+                attended
+                trendDirection
+                problemsSolved
+                totalProblems
+                finishTimeInSeconds
+                rating
+                ranking
+                contest {
+                    title
+                    startTime
+                }
+            }
+        }
+        """ % (handle_name, handle_name)
+        
+        response = requests.post(url, json={'query': query})
+        data = response.json()
+        return data
+    
+    data = fetch_user_data(handle_name)
+    try:
+        contests = data['data']['userContestRankingHistory']
+        ratings = []
+        for contest in contests:
+            if contest['attended'] == True:
+                ratings.append(contest['rating'])
+    
+        if(len(ratings) < 5):
+            return JsonResponse({'status': '400', 'message': 'Please participate in atleast 5 contests.'})
+    
+        ratings = ratings[-5:]
+
+        forecast = []
+        for i in range(0, 5, 1):
+            next_rating = rating_predictor.predict([ratings])
+            forecast.append(next_rating[0][0])
+            ratings.pop(0)
+            ratings.append(next_rating[0][0])
+
+        return JsonResponse({
+            'status': 200,
+            'forecast': forecast,
+            'user': data
+        })
+    except:
+        return JsonResponse({'status': '400', 'message': 'User doesn\'t exist'})
