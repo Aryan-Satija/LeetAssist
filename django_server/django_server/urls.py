@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from echo.views import *
 from blogs.views import *
+from django.http import JsonResponse 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('echo/recommend/<problem_id>', recommend),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('echo/ratings/lc/<handle_name>', predict_my_rating),
     path('echo/recommendFromText', recommendFromText),
     path('echo/tags', tagsPredictor),
+    path('', lambda request: JsonResponse({'message': 'Server Is Running'}))
 ]
