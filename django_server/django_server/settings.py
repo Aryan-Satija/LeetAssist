@@ -1,20 +1,21 @@
 import environ, os
 from pathlib import Path
 
+STATIC_URL = '/static/'
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 try:
     SECRET_KEY = env('SECRET_KEY')
-    print(f"Loaded SECRET_KEY: {SECRET_KEY}")
 except Exception as e:
     print("Error loading SECRET_KEY:", str(e))
     SECRET_KEY = 'fallback-secret-key'  
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["leetassist-1.onrender.com"]
+ALLOWED_HOSTS = ["leetassist-1.onrender.com", "127.0.0.1"]
 
 
 # Application definition
@@ -37,10 +38,9 @@ EXTERNAL_APPS = [
 INSTALLED_APPS += EXTERNAL_APPS
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -48,15 +48,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  
-    "https://leetassist-1.onrender.com", 
-]
-
-CORS_ALLOW_ALL_ORIGINS = True
-
 ROOT_URLCONF = 'django_server.urls'
 
+CORS_ALLOW_ALL_ORIGINS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

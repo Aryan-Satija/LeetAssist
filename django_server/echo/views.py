@@ -33,7 +33,7 @@ with open('../model/codeforces_dataset.pkl', 'rb') as f:
 with open('../model/features.pkl', 'rb') as f:
     features = pickle.load(f)
 
-prediction_model = load_model('../model/prediction_model.h5')
+# prediction_model = load_model('../model/prediction_model.h5')
 
 problems = list(map(lambda x: {
         "id": x[0],
@@ -47,7 +47,7 @@ problems = list(map(lambda x: {
         "likes": x[14],
         "dislikes": x[15],
         "problem_URL": x[16],
-    },  dataset.values.tolist()))
+},  dataset.values.tolist()))
 
 def recommend(request, problem_id):
     try:
@@ -74,7 +74,7 @@ def recommend(request, problem_id):
 
 def rating(request, handle_name):
     url = f"https://codeforces.com/api/user.rating?handle={handle_name}"
-
+    prediction_model = load_model('../model/prediction_model.h5')
     try:
         response = requests.get(url)
         response.raise_for_status()
