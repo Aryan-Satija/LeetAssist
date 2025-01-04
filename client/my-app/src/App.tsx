@@ -6,10 +6,11 @@ import Recommend from "./pages/recommend";
 import Rating from "./pages/Rating";
 import Contact from "./pages/Contact";
 import Tags from "./pages/Tag";
+import Echo from "./pages/Echo";
 function App() {
   return (
     <div>
-        <Navbar/> 
+        <Navbar />
         <Routes>
           <Route path={"/"} element={<Home/>}/>
           <Route path={"/about"} element={<About/>}/>
@@ -17,6 +18,7 @@ function App() {
           <Route path={"/rating"} element={<Rating/>}/>
           <Route path={"/contact-us"} element={<Contact/>}/>
           <Route path={"/tags"} element={<Tags/>}/>
+          <Route path={"/echo"} element={<Echo/>}/>
         </Routes>
     </div>
   );
