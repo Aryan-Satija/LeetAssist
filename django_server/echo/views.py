@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from nltk.stem.porter import PorterStemmer
-from tensorflow.keras.models import load_model
-from nltk.stem.porter import PorterStemmer
 import numpy as np
+import pandas as pd
 import pickle
 import requests
 from sklearn.metrics.pairwise import cosine_similarity
@@ -33,7 +32,9 @@ with open('../model/codeforces_dataset.pkl', 'rb') as f:
 with open('../model/features.pkl', 'rb') as f:
     features = pickle.load(f)
 
-# prediction_model = load_model('../model/prediction_model.h5')
+with open('../model/cf_rating_predictor.pkl', 'rb') as f:
+    prediction_model = pickle.load(f)
+
 
 problems = list(map(lambda x: {
         "id": x[0],
@@ -74,7 +75,6 @@ def recommend(request, problem_id):
 
 def rating(request, handle_name):
     url = f"https://codeforces.com/api/user.rating?handle={handle_name}"
-    prediction_model = load_model('../model/prediction_model.h5')
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -82,30 +82,33 @@ def rating(request, handle_name):
         contests = data.get('result')
         if len(contests) < 9:
             return JsonResponse({
+                'status': 400,
                 'message': 'data insufficient',
-                'forecasted_ratings': []
+                'forecast': []
             })
         contests = contests[-9:]
         ratings = []
         for contest in contests:
             ratings.append(contest['newRating'])
             
+        ratings = ratings[-9:]
         response = []
-        ratings = np.array(ratings).reshape(1, 9, 1)  
-        
-        for _ in range(5):  
-            prediction = prediction_model.predict(ratings)
-            response.append(float(prediction[0][0]))  
-            ratings = np.append(ratings[0][1:], [[prediction[0][0]]], axis=0).reshape(1, 9, 1)
+        for _ in range(0, 5, 1):
+            next_rating = prediction_model.predict([ratings])
+            response.append(next_rating[0])
+            ratings.pop(0)
+            ratings.append(next_rating[0])
         
         return JsonResponse({
+            'status': 200,
             'message': 'data sufficient',
-            'forecasted_ratings': response
+            'forecast': response
         })
     except:
         return JsonResponse({
+                'status': 400,
                 'message': 'something went wrong',
-                'forecasted_ratings': []
+                'forecast': []
             })
 
 @csrf_exempt   
@@ -134,7 +137,7 @@ def recommendFromText(request):
             "id": int(x.iloc[0]),
             "is_premium": bool(x.iloc[2]),
             "title": x.iloc[3],
-            "problem_description": x.iloc[4],
+            "problem_description": "" if pd.isna(x.iloc[4]) else x.iloc[4],
             "difficulty": x.iloc[6],
             "solution": int(x.iloc[12]) if isinstance(x.iloc[12], int) else 0,
             "likes": int(x.iloc[14]) if isinstance(x.iloc[14], int) else 0,
@@ -215,7 +218,7 @@ def predict_my_rating(request, handle_name):
                 ratings.append(contest['rating'])
     
         if(len(ratings) < 5):
-            return JsonResponse({'status': '400', 'message': 'Please participate in atleast 5 contests.'})
+            return JsonResponse({'status': 400, 'message': 'Please participate in atleast 5 contests.'})
     
         ratings = ratings[-5:]
 
@@ -232,4 +235,4 @@ def predict_my_rating(request, handle_name):
             'user': data
         })
     except:
-        return JsonResponse({'status': '400', 'message': 'User doesn\'t exist'})
+        return JsonResponse({'status': 400, 'message': 'User doesn\'t exist'})

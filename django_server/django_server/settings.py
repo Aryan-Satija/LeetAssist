@@ -1,7 +1,6 @@
 import environ, os
 from pathlib import Path
 
-STATIC_URL = '/static/'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
@@ -13,9 +12,9 @@ except Exception as e:
     print("Error loading SECRET_KEY:", str(e))
     SECRET_KEY = 'fallback-secret-key'  
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["leetassist-1.onrender.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -51,6 +50,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'django_server.urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
