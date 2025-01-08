@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { CopyPlus, Target, SendHorizontal, BookOpenText } from 'lucide-react';
+import { CopyPlus, Target, SendHorizontal, BookOpenText, PencilRuler } from 'lucide-react';
 import {UserOutlined} from '@ant-design/icons'
 import { Avatar, Input, Select } from 'antd';
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -14,7 +14,9 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 const Echo = () => {
-    const base = 'http://localhost:8000'
+    // http://localhost:8000
+    // http://leetassist-1.onrender.com
+    const base = 'https://leetassist-1.onrender.com' 
     const [mode, setMode] = useState<number>(0);
     const [platform, setPlatform] = useState<number>(0);
     const [chat, setChat] = useState<{text: string, sender: string}[]>([]);
@@ -265,6 +267,26 @@ const Echo = () => {
             <div className='w-full flex flex-row items-center justify-around pb-2' style={{"boxShadow": "0 5px 10px rgba(0, 0, 0, 0.3)"}}>
                 {/* header */}
                 <div className='flex flex-row items-center gap-6 text-md text-white font-semibold cursor-pointer'>
+                    <div>
+                        <Tooltip.Provider>
+                            <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                    <button onClick={()=>{
+                                    }}>
+                                        <PencilRuler/>
+                                    </button>
+                                </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                    <Tooltip.Content className="TooltipContent" sideOffset={5}>
+                                        <div className='opacity-100'>
+                                            Mini Games (Coming Soon)
+                                        </div>
+                                        <Tooltip.Arrow className="TooltipArrow" />
+                                    </Tooltip.Content>
+                                </Tooltip.Portal>
+                            </Tooltip.Root>
+                        </Tooltip.Provider>
+                    </div>
                     <div>
                         <Tooltip.Provider>
                             <Tooltip.Root>

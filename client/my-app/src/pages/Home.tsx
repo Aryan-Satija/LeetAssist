@@ -1,37 +1,70 @@
-import Footer from '../components/footer';
 import { useNavigate } from 'react-router-dom';
+import ConfettiExplosion from '../components/background'
+import code from '../assests/code.png';
+import {WandSparkles} from 'lucide-react';
 const Home = () => {
     const navigate = useNavigate();
   return (
-    <div className='relative bg-[#11192D] min-h-[100vh] overflow-x-hidden w-full min-w-[320px]'>
-        <div className='bg-[#1e8296] absolute top-[4rem] -z-5 left-[-35rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[68.75rem] -z-2'></div>
-        <div className='text-center mt-4 text-4xl font-bold text-slate-200 relative z-10'>CodeAssist: Revolutionizing Coding Learning with Adaptive AI</div>
-        <div className='text-[#67c2ec] px-4 py-4 cursor-pointer flex flex-row items-center justify-center gap-2 relative z-10'>Welcome to CodeAssist, the world's first adaptive learning platform designed to personalize your coding journey based on your unique abilities, psychological traits, and learning behavior.</div>
-        <div className='flex flex-col items-center justify-center mt-8'>
-            <button className='w-[300px] bg-[#1e8296] cursor-pointer border-2 border-white text-white text-center py-1 rounded-md hover:bg-[#1e5296] duration-200'>Register Now</button>
-        </div>
-
-        <div className='mx-[1rem] md:mx-[4rem] my-[4rem]'>
-            <span className='text-xl text-white bg-[#1e8296]/50 relative z-10 px-2 rounded-full'>Introducing Echo:</span>
-            <div className='relative z-10 text-sm text-slate-300 pt-2'>Stuck on a problem and seeking more practice? LeetAssist recommends similar LeetCode questions tailored to your current challenge, helping you strengthen your problem-solving skills efficiently.</div>
-            <div className='shadow-xl mt-4 shadow-gray-600'>
-                <video muted autoPlay loop> 
-                    <source src={'https://res.cloudinary.com/dinouvzsz/video/upload/v1736152245/Screen_Recording_2025-01-06_135558_i5birs.mp4'}/>
-                </video>
+    <div className='relative bg-[#000000] min-h-[100vh] overflow-x-hidden w-full min-w-[320px]'>
+        <div className='flex flex-col items-center justify-center h-[100vh]'>
+            <ConfettiExplosion/>
+            <div className='flex flex-row items-center justify-center h-full w-full gap-8 px-[2rem]'>
+                <div className='flex flex-col items-center justify-center'>
+                    <div className='bg-gradient-to-b from-[#727273] to-[#9d9c9c] inline-block text-transparent bg-clip-text text-8xl font-bold'>Introducing</div>
+                    <div className='bg-[#ffffff] inline-block text-transparent bg-clip-text text-8xl font-bold'>CodeAssist</div>
+                    <div className='text-slate-400 pt-4 text-center'>Welcome to CodeAssist, the world's first adaptive learning platform designed to personalize your coding journey based on your unique abilities, psychological traits, and learning behavior.</div>
+                </div>
+                <div>
+                    <img src={code} alt="Code" className='w-[320px] md:w-[820px] rounded-md rotate-12'/>
+                </div>
             </div>
         </div>
         <div className='mx-[1rem] md:mx-[4rem] my-[4rem]'>
-            <div className='relative z-10 text-sm text-slate-300 pt-2'>Unlock the future of your coding journey with LeetForesight! Our AI-powered model predicts your next contest rating, helping you strategize and improve your performance.</div>
-            <div className='shadow-xl mt-4 shadow-gray-600'>
-                <video muted autoPlay loop> 
-                    <source src={'https://res.cloudinary.com/dinouvzsz/video/upload/v1736154809/Screen_Recording_2025-01-06_144143_jrb5xq.mp4'}/>
-                </video>
+            <div className='text-8xl bg-gradient-to-b from-[#727273] to-[#9d9c9c] text-transparent bg-clip-text relative z-10 rounded-full font-bold text-center py-[4rem]'>Introducing Echo:</div>
+            <div className='flex flex-col md:flex-row items-center justify-center gap-4 pb-[4rem]'>
+                <div className='text-md text-slate-300 pt-2 text-center flex flex-col'>
+                    <div>
+                        <div className=' text-md text-slate-300 pt-2 text-center'>
+                            Stuck on a problem and seeking more practice?
+                        </div>
+                        <div className='text-md text-slate-300 pt-2 text-center'> 
+                            LeetAssist recommends similar LeetCode questions tailored to your current challenge, helping you strengthen your problem-solving skills efficiently.
+                        </div>
+                        <div>
+                            <button onClick={()=>{
+                                navigate('/echo')
+                            }} className="text-slate-100 mt-4 mx-auto flex flex-row items-center justify-center gap-2 bg-green-500 w-full rounded-md py-2 cursor-pointer bg:scale-96 duration-200 hover:bg-green-600">Try Out <WandSparkles/></button>
+                        </div>
+                    </div>
+                </div>
+                <div className='shadow-xl mt-4 shadow-gray-800 rounded-md'>
+                    <video muted autoPlay loop className='rounded-md'> 
+                        <source src={'https://res.cloudinary.com/dinouvzsz/video/upload/v1736152245/Screen_Recording_2025-01-06_135558_i5birs.mp4'}/>
+                    </video>                
+                </div>
             </div>
-        </div>
-        <div className='flex flex-col items-center justify-center my-8'>
-            <button onClick={()=>{
-                navigate('/echo')
-            }} className='w-[300px] bg-[#1e8296] cursor-pointer border-2 border-white text-white text-center py-1 rounded-md hover:bg-[#1e5296] duration-200'>Try Echo</button>
+            <div className='flex flex-col md:flex-row-reverse items-center justify-center gap-4 pb-[4rem]'>
+                <div className='text-md text-slate-300 pt-2 text-center flex flex-col'>
+                    <div>
+                        <div className=' text-md text-slate-300 pt-2 text-center'>
+                            Unlock the future of your coding journey with CodeForesight!
+                        </div>
+                        <div className='text-md text-slate-300 pt-2 text-center'> 
+                            Our AI-powered model predicts your next contest rating, helping you strategize and improve your performance.
+                        </div>
+                        <div>
+                            <button onClick={()=>{
+                                navigate('/echo')
+                            }} className="text-slate-100 mt-4 mx-auto flex flex-row items-center justify-center gap-2 bg-green-500 w-full rounded-md py-2 cursor-pointer bg:scale-96 duration-200 hover:bg-green-600">Try Out <WandSparkles/></button>
+                        </div>
+                    </div>
+                </div>
+                <div className='shadow-xl mt-4 shadow-gray-800 rounded-md'>
+                    <video muted autoPlay loop className='rounded-md'> 
+                        <source src={'https://res.cloudinary.com/dinouvzsz/video/upload/v1736154809/Screen_Recording_2025-01-06_144143_jrb5xq.mp4'}/>
+                    </video>                
+                </div>
+            </div>
         </div>
     </div>
   )
