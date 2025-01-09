@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import ConfettiExplosion from '../components/background'
 import code from '../assests/code.png';
-import {WandSparkles} from 'lucide-react';
+import { WandSparkles, MoveRight } from 'lucide-react';
+import '../index.css'
 const Home = () => {
     const navigate = useNavigate();
   return (
@@ -13,6 +14,22 @@ const Home = () => {
                     <div className='bg-gradient-to-b from-[#727273] to-[#9d9c9c] inline-block text-transparent bg-clip-text text-8xl font-bold'>Introducing</div>
                     <div className='bg-[#ffffff] inline-block text-transparent bg-clip-text text-8xl font-bold'>CodeAssist</div>
                     <div className='text-slate-400 pt-4 text-center'>Welcome to CodeAssist, the world's first adaptive learning platform designed to personalize your coding journey based on your unique abilities, psychological traits, and learning behavior.</div>
+                    <div className='flex flex-row items-center justify-between pt-4 gap-8'>
+                        <div>
+                            <button className="button" onClick={()=>{
+                                navigate('/')
+                            }}>
+                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Register Now <MoveRight/></span>
+                            </button>
+                        </div>
+                        <div>
+                            <button className="button" onClick={()=>{
+                                navigate('/')
+                            }}>
+                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Login Now <MoveRight/></span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <img src={code} alt="Code" className='w-[320px] md:w-[820px] rounded-md rotate-12'/>
@@ -30,10 +47,12 @@ const Home = () => {
                         <div className='text-md text-slate-300 pt-2 text-center'> 
                             LeetAssist recommends similar LeetCode questions tailored to your current challenge, helping you strengthen your problem-solving skills efficiently.
                         </div>
-                        <div>
-                            <button onClick={()=>{
+                        <div className='my-8'> 
+                            <button className="button" onClick={()=>{
                                 navigate('/echo')
-                            }} className="text-slate-100 mt-4 mx-auto flex flex-row items-center justify-center gap-2 bg-green-500 w-full rounded-md py-2 cursor-pointer bg:scale-96 duration-200 hover:bg-green-600">Try Out <WandSparkles/></button>
+                            }}>
+                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Try Out <WandSparkles/></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -53,9 +72,13 @@ const Home = () => {
                             Our AI-powered model predicts your next contest rating, helping you strategize and improve your performance.
                         </div>
                         <div>
-                            <button onClick={()=>{
-                                navigate('/echo')
-                            }} className="text-slate-100 mt-4 mx-auto flex flex-row items-center justify-center gap-2 bg-green-500 w-full rounded-md py-2 cursor-pointer bg:scale-96 duration-200 hover:bg-green-600">Try Out <WandSparkles/></button>
+                            <div className='my-8'> 
+                                <button className="button" onClick={()=>{
+                                    navigate('/echo')
+                                }}>
+                                    <span className='flex flex-row items-center justify-center gap-4 text-md'>Try Out <WandSparkles/></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
