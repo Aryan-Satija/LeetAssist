@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const User = require('../models/Users.js');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
+const bcrypt = require('bcrypt');
 dotenv.config();
 exports.signup = async (req, res) => {
     try {
@@ -9,13 +11,50 @@ exports.signup = async (req, res) => {
                 lastName, 
                 email, 
                 password, 
-                rating,
                 lc_username,
                 cf_username } = req.body;
 
-        if(!firstName || !lastName || !email || !password || !rating || !lc_username || !cf_username){
+        if(!firstName || !lastName || !password || !lc_username || !cf_username){
             return res.status(400).json(
                 { message: "Please fill in all fields" }
+            );
+        }
+        try{
+            let url = `https://codeforces.com/api/user.rating?handle=${cf_username}`
+            await axios.get(url)
+        } catch(err){
+            console.log(err);
+            return res.status(400).json(
+                { message: "Invalid Codeforces username" }
+            );
+        }
+          try{
+            let url = "https://leetcode.com/graphql"
+            const query = `
+              query {
+                userContestRanking(username: "${lc_username}") {
+                  rating  
+                }
+              }
+            `;
+            const response = await axios.post(
+              url,
+              { query },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            console.log(response.data);
+            if(response.data?.errors){
+                return res.status(400).json(
+                    { message: "Invalid Leetcode username" }
+                );
+            }
+        } catch(err){
+            return res.status(400).json(
+                { message: "Invalid Leetcode username" }
             );
         }
 
@@ -35,7 +74,6 @@ exports.signup = async (req, res) => {
             lastName,
             email,
             password: hashedPassword,
-            rating,
             lc_username,
             cf_username
         });
@@ -45,6 +83,7 @@ exports.signup = async (req, res) => {
             message: 'User registered successfully'
         });
     } catch(err){
+        console.log(err);
         return res.status(500).json({
             success: true,
             message: "Something went wrong"
@@ -70,8 +109,12 @@ exports.login = async(req, res)=>{
                 message: 'User doesn\'t exist.'
             })
         }
-
-        if(await bcrypt.compare(user.password, password)){
+        
+        const tmp = await bcrypt.compare(password, user.password)
+        
+        console.log(tmp)
+        
+        if(tmp){
             const token = jwt.sign(
                 {email: user.email, id: user._id},
                 process.env.SECRET_KEY,

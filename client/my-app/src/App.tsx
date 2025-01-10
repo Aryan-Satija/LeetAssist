@@ -7,6 +7,8 @@ import Rating from "./pages/Rating";
 import Contact from "./pages/Contact";
 import Tags from "./pages/Tag";
 import Echo from "./pages/Echo";
+import RegisterPage from "./pages/Register";
+import LoginPage from "./pages/Login";
 function App() {
   return (
     <div>
@@ -18,6 +20,8 @@ function App() {
           <Route path={"/contact-us"} element={<Contact/>}/>
           <Route path={"/tags"} element={<Tags/>}/>
           <Route path={"/echo"} element={<Echo/>}/>
+          <Route path={"/register"} element={<RegisterPage/>}/>
+          <Route path={"/login"} element={<LoginPage/>}/>
         </Routes>
     </div>
   );

@@ -68,6 +68,16 @@ button {
 	font-size: 1em;
 	cursor: pointer;
 }
+.buttonlight {
+	position: relative;
+	text-decoration: none;
+	color: #000;
+	background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+	padding: 10px 25px;
+	border-radius: 5px;
+	font-size: 1em;
+	cursor: pointer;
+}
   
 .button span {
 	position: relative;
@@ -99,6 +109,39 @@ button {
 }
   
 .button:hover:after {
+	opacity: 1;
+}
+  
+.buttonlight span {
+	position: relative;
+	z-index: 1;
+}
+  
+.buttonlight::before {
+	content: "";
+	position: absolute;
+	inset: 1px;
+	background: #ffffff;
+	border-radius: 5px;
+	transition: 0.5s;
+}
+  
+.buttonlight:hover::before {
+	opacity: 0.7;
+}
+  
+.buttonlight::after {
+	content: "";
+	position: absolute;
+	inset: 0px;
+	background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+	border-radius: 9px;
+	transition: 0.5s;
+	opacity: 0;
+	filter: blur(20px);
+}
+  
+.buttonlight:hover:after {
 	opacity: 1;
 }
   
