@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const bcrypt = require('bcrypt');
+const util = require('util');
+const promisify = util.promisify;
 dotenv.config();
 exports.signup = async (req, res) => {
     try {
@@ -112,8 +114,6 @@ exports.login = async(req, res)=>{
         
         const tmp = await bcrypt.compare(password, user.password)
         
-        console.log(tmp)
-        
         if(tmp){
             const token = jwt.sign(
                 {email: user.email, id: user._id},
@@ -122,13 +122,13 @@ exports.login = async(req, res)=>{
                     expiresIn: "24h"
                 }
             );
-
-            user.token = token;
+            
             user.password = undefined;
 
             return res.status(200).json({
                 success: true,
                 user,
+                token,
                 message: "User login success"
             });
         }
@@ -141,5 +141,37 @@ exports.login = async(req, res)=>{
             success: false,
             message: "Something went wrong"
         })
+    }
+}
+exports.validateToken = async(req, res)=>{
+    try{
+        const token = req.header("Authorization")?.replace("Bearer ", "");
+        console.log(token);
+        if(!token){
+            return res.status(400).json({
+                success: false,
+                message: 'Token is missing'
+            });
+        }
+
+        try{
+            const decode = await promisify(jwt.verify)(token, process.env.SECRET_KEY);
+            return res.status(200).json({
+                success: true,
+                message: 'Token is valid'
+            })
+        } catch(err){
+            console.log(err);
+            return res.status(401).json({
+                success:false,
+                message:'token is invalid',
+            });        
+        }
+        next();
+    } catch(err){
+        return res.status(401).json({
+            success:false,
+            message:'Something went wrong while validating the token',
+        });
     }
 }

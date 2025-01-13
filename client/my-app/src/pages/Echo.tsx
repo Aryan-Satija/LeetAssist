@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CopyPlus, Target, SendHorizontal, BookOpenText, PencilRuler } from 'lucide-react';
 import {UserOutlined} from '@ant-design/icons'
 import { Avatar, Input, Select } from 'antd';
@@ -10,10 +10,14 @@ import {Bar} from 'react-chartjs-2';
 import 'react-toastify/dist/ReactToastify.css';
 import "../index.css";
 import { Chart, registerables } from 'chart.js';
-
+import { useLocation } from 'react-router-dom';
+import EchoGames from './EchoGames';
 Chart.register(...registerables);
 
 const Echo = () => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const play = queryParams.get('games');
     // http://localhost:8000
     // http://leetassist-1.onrender.com
     const base = 'https://leetassist-1.onrender.com' 
@@ -25,7 +29,15 @@ const Echo = () => {
     const [placeholder, setPlaceholder] = useState<string>("");
     const [isLoading, setIsloading] = useState<Boolean>(false);
     const [loading, setLoading] = useState(0);
-    
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+    useEffect(()=>{
+        if(scrollRef.current){
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [chat]);
+    if(play === 'true'){
+        return <EchoGames/>
+    }
     const startSession = async()=>{
         let hasError = false;
         setIsloading(true);
@@ -341,7 +353,7 @@ const Echo = () => {
                     <Avatar className='bg-[#42d0ec]' icon={<UserOutlined />} />
                 </div>
             </div>
-            <div className="w-full p-4 rounded-md overflow-y-auto custom-scrollbar h-full">
+            <div className="w-full p-4 rounded-md overflow-y-auto custom-scrollbar h-full" ref={scrollRef}>
                 {/* Chat */}
                 <div className="w-full flex flex-col item-start gap-4 h-full">
                     {chat.map((item, index) => {

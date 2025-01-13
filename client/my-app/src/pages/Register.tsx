@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios, {AxiosError} from "axios";
 import ConfettiExplosion from "../components/background";
 import { toast } from 'react-toastify';
+import {useNavigate} from 'react-router-dom';
 import "../index.css"
 interface FormData {
   firstName: string;
@@ -14,6 +15,7 @@ interface FormData {
 
 const RegisterPage: React.FC = () => {
   const base = "http://127.0.0.1:5173"
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -41,6 +43,9 @@ const RegisterPage: React.FC = () => {
       const response = await axios.post(`${base}/auth/signup`, formData)
       toast.update(id, {render: "Task successful", type: "success", isLoading: false, autoClose: 3000})
       setSubmitted(true)
+      setTimeout(()=>{
+        navigate('/login');
+      }, 5000)
     } catch (error: unknown) {
       if(axios.isAxiosError(error)){
         console.log();
@@ -53,18 +58,19 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        {
-          submitted && 
-          <ConfettiExplosion/>
-        }
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+    <div className="min-h-screen bg-[#11192D] flex flex-col justify-center items-center">
+      {
+        submitted && 
+        <ConfettiExplosion/>
+      }
+      <div className='bg-[#1e8296] absolute top-[8rem] -z-5 left-[-15rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
+      <div className="w-full max-w-md bg-transparent backdrop-blur-lg p-6 rounded-lg shadow-lg shadow-slate-700">
+        <h2 className="text-2xl font-bold text-gray-100 mb-6 text-center">
           Register
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-100">
               First Name
             </label>
             <input
@@ -73,12 +79,12 @@ const RegisterPage: React.FC = () => {
               value={formData.firstName}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-4 py-2 bg-[#1e8296]/30 border-[1px] border-[#0e444e] rounded-md shadow-sm focus:outline-none text-slate-200"
               autoComplete="none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-100">
               Last Name
             </label>
             <input
@@ -87,12 +93,12 @@ const RegisterPage: React.FC = () => {
               value={formData.lastName}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-4 py-2 bg-[#1e8296]/30 border-[1px] border-[#0e444e] rounded-md shadow-sm focus:outline-none text-slate-200"
               autoComplete="none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-100">
               Email
             </label>
             <input
@@ -101,12 +107,12 @@ const RegisterPage: React.FC = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-4 py-2 bg-[#1e8296]/30 border-[1px] border-[#0e444e] rounded-md shadow-sm focus:outline-none text-slate-200"
               autoComplete="none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-100">
               Password
             </label>
             <input
@@ -115,12 +121,12 @@ const RegisterPage: React.FC = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-4 py-2 bg-[#1e8296]/30 border-[1px] border-[#0e444e] rounded-md shadow-sm focus:outline-none text-slate-200"
               autoComplete="none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-100">
               LeetCode Username
             </label>
             <input
@@ -128,12 +134,12 @@ const RegisterPage: React.FC = () => {
               name="lc_username"
               value={formData.lc_username}
               onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-4 py-2 bg-[#1e8296]/30 border-[1px] border-[#0e444e] rounded-md shadow-sm focus:outline-none text-slate-200"
               autoComplete="none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-100">
               Codeforces Username
             </label>
             <input
@@ -141,7 +147,7 @@ const RegisterPage: React.FC = () => {
               name="cf_username"
               value={formData.cf_username}
               onChange={handleChange}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-4 py-2 bg-[#1e8296]/30 border-[1px] border-[#0e444e] rounded-md shadow-sm focus:outline-none text-slate-200"
               autoComplete="none"
             />
           </div>

@@ -17,16 +17,16 @@ const Home = () => {
                     <div className='flex flex-row items-center justify-between pt-4 gap-8'>
                         <div>
                             <button className="button" onClick={()=>{
-                                navigate('/')
+                                navigate('/register')
                             }}>
-                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Register Now <MoveRight/></span>
+                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Register Now</span>
                             </button>
                         </div>
                         <div>
                             <button className="button" onClick={()=>{
-                                navigate('/')
+                                navigate('/login')
                             }}>
-                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Login Now <MoveRight/></span>
+                                <span className='flex flex-row items-center justify-center gap-4 text-md'>Login Now </span>
                             </button>
                         </div>
                     </div>

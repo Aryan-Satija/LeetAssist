@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     },
     cf_username: {
         type: String
+    },
+    lastPlayed: {
+        type: Date,
+        default: new Date('1970-01-01T00:00:00Z') 
     }
 })
 
