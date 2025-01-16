@@ -1,0 +1,142 @@
+[
+    {
+        "min": 0,
+        "max": 1500,
+        "topic": "simulation" 
+    },
+    {
+        "min": 0,
+        "max": 1900,
+        "topic": "math" 
+    },
+    {
+        "min": 0,
+        "max": 1900,
+        "topic": "array" 
+    },
+    {
+        "min": 1500,
+        "max": 1700,
+        "topic": "two-pointers" 
+    },
+    {
+        "min": 1500,
+        "max": 1700,
+        "topic": "prefix-sum" 
+    },
+    {
+        "min": 1500,
+        "max": 1900,
+        "topic": "sliding-window" 
+    },
+    {
+        "min": 1500,
+        "max": 1700,
+        "topic": "linked-list" 
+    },
+    {
+        "min": 1500,
+        "max": 1700,
+        "topic": "matix" 
+    },
+    {
+        "min": 1500,
+        "max": 1850,
+        "topic": "recursion" 
+    },
+    {
+        "min": 1500,
+        "max": 1850,
+        "topic": "backtracking" 
+    },
+    {
+        "min": 1500,
+        "max": 1800,
+        "topic": "queue" 
+    },
+    {
+        "min": 1500,
+        "max": 1800,
+        "topic": "stack" 
+    },
+    {
+        "min": 1500,
+        "max": 1800,
+        "topic": "heap" 
+    },
+    {
+        "min": 1800,
+        "max": 2000,
+        "topic": "breadh-first-search" 
+    },
+    {
+        "min": 1800,
+        "max": 2000,
+        "topic": "depth-first-search" 
+    },
+    {
+        "min": 1700,
+        "max": 2000,
+        "topic": "game-theory"
+    },
+    {
+        "min": 1700,
+        "max": 2100,
+        "topic": "number-theory" 
+    },
+    {
+        "min": 1700,
+        "max": 2100,
+        "topic": "counting" 
+    },
+    {
+        "min": 1700,
+        "max": 2100,
+        "topic": "combinatorics" 
+    },
+    {
+        "min": 1700,
+        "max": 2100,
+        "topic": "geometry" 
+    },
+    {
+        "min": 1850,
+        "max": 2200,
+        "topic": "shortest-path" 
+    },
+    {
+        "min": 1900,
+        "max": 2300,
+        "topic": "monotonic-stack" 
+    },
+    {
+        "min": 1900,
+        "max": 2300,
+        "topic": "monotonic-queue" 
+    },
+    {
+        "min": 1900,
+        "max": 2300,
+        "topic": "union-find" 
+    },
+    {
+        "min": 2000,
+        "max": 3000,
+        "topic": "rolling-hash"
+    },
+    {
+        "min": 2000,
+        "max": 3000,
+        "topic": "segment-tree"
+    },
+    {
+        "min": 2000,
+        "max": 3000,
+        "topic": "fenwick-tree"
+    },
+    {
+        "min": 2000,
+        "max": 3000,
+        "topic": "dp"
+    }
+]

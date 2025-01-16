@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const {connect} = require('./config/database.js');
 const gameRoutes = require('./routes/games.js');
-const userRoutes = require('./routes/users.js')
+const userRoutes = require('./routes/users.js');
+const roadmapRoutes = require('./routes/roadmap.js');
 const app = express();
 dotenv.config();
 app.use(express.json());
@@ -12,7 +13,7 @@ connect();
 app.use(cors())
 app.use('/games', gameRoutes);
 app.use('/auth', userRoutes);
-
+app.use('/roadmap', roadmapRoutes);
 app.get('/', (req, res)=>{
     return res.json({
         success: true,

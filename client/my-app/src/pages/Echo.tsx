@@ -4,7 +4,7 @@ import { CopyPlus, Target, SendHorizontal, BookOpenText, PencilRuler } from 'luc
 import {UserOutlined} from '@ant-design/icons'
 import { Avatar, Input, Select } from 'antd';
 import * as Tooltip from "@radix-ui/react-tooltip";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import {Bar} from 'react-chartjs-2';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +12,8 @@ import "../index.css";
 import { Chart, registerables } from 'chart.js';
 import { useLocation } from 'react-router-dom';
 import EchoGames from './EchoGames';
+import MiniHole from '../components/MiniHole';
+import Roadmap from '../components/roadmap';
 Chart.register(...registerables);
 
 const Echo = () => {
@@ -20,7 +22,23 @@ const Echo = () => {
     const play = queryParams.get('games');
     // http://localhost:8000
     // http://leetassist-1.onrender.com
+    const [user, setUser] = useState<null | {
+        rating: number
+    }>(null);
+    console.log(user);
+    useEffect(()=>{
+        const storedUser = localStorage.getItem('user');
+        if(storedUser != null){
+            try{
+                setUser(JSON.parse(storedUser));
+            } catch(err){
+                console.log(err);
+            }
+        }
+    }, []);
+    
     const base = 'https://leetassist-1.onrender.com' 
+    
     const [mode, setMode] = useState<number>(0);
     const [platform, setPlatform] = useState<number>(0);
     const [chat, setChat] = useState<{text: string, sender: string}[]>([]);
@@ -344,6 +362,10 @@ const Echo = () => {
                             </Tooltip.Root>
                         </Tooltip.Provider>
                     </div>
+                    <div>
+                        <Roadmap rating={user ? (user.rating + 700) : 1500}/>
+
+                    </div>
                 </div>
                 <div className='text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2'>
                     <div className='text-white'><Target/></div>
@@ -457,8 +479,11 @@ const Echo = () => {
                     })}
                     {
                         isLoading &&
-                        <div className="self-start text-[#c8eacc] bg-[#c8eacc]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg max-w-xs shadow">
+                        <div className="self-start bg-[#062109]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg max-w-xs shadow text-white w-[200px]">
                             Loading... ({loading}%)
+                            <div>
+                                <MiniHole/>
+                            </div>
                         </div>
                     }
                 </div>

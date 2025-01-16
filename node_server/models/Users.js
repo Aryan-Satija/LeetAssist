@@ -33,6 +33,26 @@ const userSchema = new mongoose.Schema({
     lastPlayed: {
         type: Date,
         default: new Date('1970-01-01T00:00:00Z') 
+    },
+    reasoning: {
+        type: Number,
+        default: 0
+    },
+    debugging: {
+        type: Number,
+        default: 0
+    },
+    memory: {
+        type: Number,
+        default: 0
+    },
+    step: {
+        type: Number,
+        default: 0
+    },
+    roadmap: {
+        type: [String],
+        default: []
     }
 })
 

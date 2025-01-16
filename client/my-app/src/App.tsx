@@ -5,6 +5,7 @@ import Echo from "./pages/Echo";
 import RegisterPage from "./pages/Register";
 import LoginPage from "./pages/Login";
 import PrivateRoutes from "./components/PrivateRoute";
+import Questionarre from "./pages/Questionarre";
 function App() {
   return (
     <div>
@@ -15,6 +16,7 @@ function App() {
               <Echo/>
             </PrivateRoutes>
           }/>
+          <Route path={"/Questionarre"} element={<Questionarre/>}/>
           <Route path={"/register"} element={<RegisterPage/>}/>
           <Route path={"/login"} element={<LoginPage/>}/>
         </Routes>
