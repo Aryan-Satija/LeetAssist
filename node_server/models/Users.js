@@ -34,6 +34,23 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: new Date('1970-01-01T00:00:00Z') 
     },
+    lastSolved: {
+        type: Date,
+        default: new Date('1970-01-01T00:00:00Z')
+    },
+    problemsOfTheDay: {
+        type: [
+            {
+                id: { type: String, required: true },
+                title: { type: String, required: true },
+                slug: {type: String, required: true},
+                difficulty: { type: String, enum: ['Easy', 'Medium', 'Hard'], required: true },
+                solved: { type: Boolean, default: false },
+                rating: {type: Number},
+            }
+        ],
+        default: []
+    },      
     reasoning: {
         type: Number,
         default: 0
