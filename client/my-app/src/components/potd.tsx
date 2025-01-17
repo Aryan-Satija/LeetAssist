@@ -8,7 +8,8 @@ interface timelineObj{
 }
 interface props {
   rating: Number,
-  step: Number
+  step: number,
+  email: String
 }
 interface problem{
     id: String,
@@ -16,7 +17,7 @@ interface problem{
     slug: String,
     solved: Boolean
 }
-const POTD: React.FC<props> = ({rating, step}) => {
+const POTD: React.FC<props> = ({rating, step, email}) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
@@ -38,12 +39,12 @@ const POTD: React.FC<props> = ({rating, step}) => {
                 children: top
             }
         }));
-        if(response.data.data.length > 0){
-            tag = response.data.data[0];
+        if(response.data.data.length > step){
+            tag = response.data.data[step];
         } 
         const sotd = await axios.post(`${nodeBase}/potd/potd`, {
             rating: rating,
-            email: "aryansatija2003@gmail.com",
+            email: email,
             tags: [tag]
         });
         setSheet(sotd.data.data)

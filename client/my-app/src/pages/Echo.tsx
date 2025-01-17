@@ -25,7 +25,8 @@ const Echo = () => {
     // http://leetassist-1.onrender.com
     const [user, setUser] = useState<null | {
         rating: number,
-        step: Number
+        step: number,
+        email: String
     }>(null);
     console.log(user);
     useEffect(()=>{
@@ -368,7 +369,7 @@ const Echo = () => {
                         <Roadmap rating={user ? (user.rating + 700) : 1500}/>
                     </div>
                     <div>
-                        <POTD rating={user ? (user.rating + 700) : 1500} step={user ? user.step : 0}/>
+                        <POTD rating={user ? (user.rating + 700) : 1500} step={user ? user.step : 0} email={user ? user.email : ""}/>
                     </div>
                 </div>
                 <div className='text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2'>
