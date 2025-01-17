@@ -14,6 +14,7 @@ import { useLocation } from 'react-router-dom';
 import EchoGames from './EchoGames';
 import MiniHole from '../components/MiniHole';
 import Roadmap from '../components/roadmap';
+import POTD from '../components/potd';
 Chart.register(...registerables);
 
 const Echo = () => {
@@ -23,7 +24,8 @@ const Echo = () => {
     // http://localhost:8000
     // http://leetassist-1.onrender.com
     const [user, setUser] = useState<null | {
-        rating: number
+        rating: number,
+        step: Number
     }>(null);
     console.log(user);
     useEffect(()=>{
@@ -364,7 +366,9 @@ const Echo = () => {
                     </div>
                     <div>
                         <Roadmap rating={user ? (user.rating + 700) : 1500}/>
-
+                    </div>
+                    <div>
+                        <POTD rating={user ? (user.rating + 700) : 1500} step={user ? user.step : 0}/>
                     </div>
                 </div>
                 <div className='text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2'>

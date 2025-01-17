@@ -112,7 +112,7 @@ exports.fetchProblems = async (req, res) => {
 
     const shuffled = formattedData.sort(() => 0.5 - Math.random());
     const randomProblems = shuffled.slice(0, 5);
-    user.problemsOfTheDay = shuffled;
+    user.problemsOfTheDay = randomProblems;
     user.lastSolved = new Date();
     user.save();
     return res.json({ total: randomProblems.length, questions: randomProblems });

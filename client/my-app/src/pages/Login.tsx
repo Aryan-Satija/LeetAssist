@@ -10,7 +10,7 @@ interface FormData {
 }
 const LoginPage = () => {
   const navigate = useNavigate();
-  const base = "http://127.0.0.1:5173"
+  const base = "https://codeassist-q2nt.onrender.com"
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: ""
