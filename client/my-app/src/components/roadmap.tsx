@@ -13,7 +13,7 @@ const Roadmap: React.FC<props> = ({rating}) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
-  const nodeBase = 'http://localhost:5173';
+  const nodeBase = 'https://codeassist-q2nt.onrender.com';
   const [timeline, setTimeline] = useState<timelineObj[]>([]);
   const showModal = () => {
     setOpen(true);
