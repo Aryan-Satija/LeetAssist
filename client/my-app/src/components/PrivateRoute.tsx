@@ -10,7 +10,7 @@ function PrivateRoutes({children}: PrivateRoutesProps){
     const token = localStorage.getItem("token");
     const [loading, setLoading] = useState<Boolean>(true);
     const [valid, setValid] = useState<Boolean>(false);
-    const base = `http://127.0.0.1:5173`
+    const base = `https://codeassist-q2nt.onrender.com`
     useEffect(()=>{
         (async()=>{
             try{
