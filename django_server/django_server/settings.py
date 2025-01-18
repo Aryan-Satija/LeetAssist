@@ -14,7 +14,7 @@ except Exception as e:
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "https://leetassist.vercel.app", "https://codeassist-1-4r2r.onrender.com"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "leetassist.vercel.app", "codeassist-1-4r2r.onrender.com"]
 
 
 # Application definition
