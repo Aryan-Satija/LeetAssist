@@ -54,7 +54,18 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://leetassist.vercel.app"
 ]
-CORS_ALLOW_ALL_ORIGINS = True  
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-requested-with',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://leetassist.vercel.app",
+    "https://leetassist-1.onrender.com",
+]
+
 CORS_ALLOWED_METHODS = [
     'GET',
     'POST',
