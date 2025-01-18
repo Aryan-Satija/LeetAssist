@@ -35,7 +35,6 @@ with open('../model/features.pkl', 'rb') as f:
 with open('../model/cf_rating_predictor.pkl', 'rb') as f:
     prediction_model = pickle.load(f)
 
-
 problems = list(map(lambda x: {
         "id": x[0],
         "is_premium": x[2],
@@ -49,6 +48,11 @@ problems = list(map(lambda x: {
         "dislikes": x[15],
         "problem_URL": x[16],
 },  dataset.values.tolist()))
+
+@csrf_exempt  
+def test(request):
+    message = json.loads(request.body).get('message')
+    return JsonResponse({message: message})
 
 def recommend(request, problem_id):
     try:
