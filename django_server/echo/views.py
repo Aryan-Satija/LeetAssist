@@ -115,71 +115,73 @@ def rating(request, handle_name):
                 'forecast': []
             })
 
-@csrf_exempt   
+@csrf_exempt
 def recommendFromText(request):
-    tags = json.loads(request.body).get('tags')
-    filtered_tags = []
-    
-    for tag in tags:
-        tag = tag.lower()
-        filtered_tags.append(ps.stem(tag))
-
-    new_df = p_dataset.copy(deep = True)
-    
-    new_df.loc[len(p_dataset.index)] = [-1, 'unknown', " ".join(filtered_tags)]
-    
-    vectors = vectorizer.fit_transform(new_df['tags']).toarray()
-    simi = cosine_similarity(vectors)
-    
-    problem_inds = sorted(list(enumerate(simi[len(p_dataset.index)])), key = lambda x : x[1], reverse = True)[1 : 6]
-    
-    response = []
-    
-    for prob_ind in problem_inds:
-        x = dataset.loc[prob_ind[0]]
-        response.append({
-            "id": int(x.iloc[0]),
-            "is_premium": bool(x.iloc[2]),
-            "title": x.iloc[3],
-            "problem_description": "" if pd.isna(x.iloc[4]) else x.iloc[4],
-            "difficulty": x.iloc[6],
-            "solution": int(x.iloc[12]) if isinstance(x.iloc[12], int) else 0,
-            "likes": int(x.iloc[14]) if isinstance(x.iloc[14], int) else 0,
-            "dislikes": int(x.iloc[15]) if isinstance(x.iloc[15], int) else 0,
-            "problem_URL": x.iloc[16],
-            "similarity": float(prob_ind[1])
-        })   
+    try:
+        tags = json.loads(request.body).get('tags', [])
+        if not tags:
+            return JsonResponse({"error": "No tags provided"}, status=400)
         
-    return JsonResponse(response, safe = False)
+        filtered_tags = [" ".join(ps.stem(tag.lower()) for tag in tags)]
+
+        new_entry = pd.DataFrame({"tags": filtered_tags}, index=[-1])
+        extended_dataset = pd.concat([p_dataset, new_entry], ignore_index=True)
+
+        vectors = vectorizer.transform(extended_dataset['tags'])
+        simi = cosine_similarity(vectors[-1], vectors).flatten()
+
+        top_indices = np.argsort(-simi)[1:6]
+        response = []
+
+        for index in top_indices:
+            row = dataset.iloc[index]
+            response.append({
+                "id": int(row.get(0, -1)),
+                "is_premium": bool(row.get(2, False)),
+                "title": row.get(3, "Unknown"),
+                "problem_description": row.get(4, "") if pd.notna(row.get(4)) else "",
+                "difficulty": row.get(6, "Unknown"),
+                "solution": int(row.get(12, 0)) if isinstance(row.get(12), int) else 0,
+                "likes": int(row.get(14, 0)) if isinstance(row.get(14), int) else 0,
+                "dislikes": int(row.get(15, 0)) if isinstance(row.get(15), int) else 0,
+                "problem_URL": row.get(16, ""),
+                "similarity": float(simi[index])
+            })
+        
+        return JsonResponse(response, safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 @csrf_exempt
 def tagsPredictor(request):
-    tags = json.loads(request.body).get('tags')
-    filtered_tags = []
-    
-    for tag in tags.split(' '):
-        tag = tag.lower()
-        filtered_tags.append(ps.stem(tag))
-
-    new_df = p_dataset.copy(deep = True)
-    
-    new_df.loc[len(p_dataset.index)] = [-1, 'unknown', " ".join(filtered_tags)]
-    
-    vectors = vectorizer.fit_transform(new_df['tags']).toarray()
-    simi = cosine_similarity(vectors)
-    
-    problem_inds = sorted(list(enumerate(simi[len(p_dataset.index)])), key = lambda x : x[1], reverse = True)[1 : 6]
-    
-    response = {}
-    
-    for prob_ind in problem_inds:
-        x = dataset.loc[prob_ind[0]]
-        response[prob_ind[0]] = {
-            'certainty': prob_ind[1],
-            'tags': x[5]
-        }  
+    try:
+        tags = json.loads(request.body).get('tags', '')
+        if not tags:
+            return JsonResponse({"error": "No tags provided"}, status=400)
         
-    return JsonResponse(response)
+        filtered_tags = " ".join(ps.stem(tag.lower()) for tag in tags.split())
+
+        new_entry = pd.DataFrame({"tags": [filtered_tags]}, index=[-1])
+        extended_dataset = pd.concat([p_dataset, new_entry], ignore_index=True)
+
+        vectors = vectorizer.transform(extended_dataset['tags'])
+        simi = cosine_similarity(vectors[-1], vectors).flatten()
+
+        top_indices = np.argsort(-simi)[1:6]
+        response = {}
+        
+        for index in top_indices:
+            row = dataset.iloc[int(index)]
+            response[int(index)] = {
+                'certainty': float(simi[index]),
+                'tags': row.iloc[5] if pd.notna(row.iloc[5]) else "Unknown"  
+            }
+            
+        return JsonResponse(response)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 def predict_my_rating(request, handle_name):
     def fetch_user_data(handle_name):
