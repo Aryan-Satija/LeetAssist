@@ -28,7 +28,7 @@ const Echo = () => {
         step: number,
         email: String
     }>(null);
-    console.log(user);
+
     useEffect(()=>{
         const storedUser = localStorage.getItem('user');
         if(storedUser != null){
@@ -40,8 +40,8 @@ const Echo = () => {
         }
     }, []);
     
-    // const base = 'https://leetassist-1.onrender.com' 
-    const base = 'http://localhost:8000' 
+    const base = 'https://leetassist-1.onrender.com' 
+    // const base = 'http://localhost:8000' 
     
     const [mode, setMode] = useState<number>(0);
     const [platform, setPlatform] = useState<number>(0);
@@ -160,8 +160,9 @@ const Echo = () => {
                   if(progressEvent.progress == undefined) return;
                   const percentCompleted = (progressEvent.progress * 100);
                   setLoading(percentCompleted);
-                },
-            });
+                }
+            }
+        );
             let problems = response.data 
             problems.forEach((problem : null | {difficulty: string, is_premium: Boolean, problem_URL: string, problem_description: string, similarity: number, title: string}) => {
                 if(problem === null) return;

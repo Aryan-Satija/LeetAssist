@@ -66,7 +66,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://leetassist-1.onrender.com",
 ]
 
-CORS_ALLOWED_METHODS = [
+CORS_ALLOW_METHODS = [
     'GET',
     'POST',
     'PUT',

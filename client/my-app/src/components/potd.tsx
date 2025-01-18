@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Carousel, Modal } from 'antd';
-import { Braces } from 'lucide-react';
+import { Carousel, Modal, Table } from 'antd';
+import { Braces, Send } from 'lucide-react';
 import * as Tooltip from "@radix-ui/react-tooltip";
 import axios from 'axios';
 interface timelineObj{
@@ -90,10 +90,10 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
           onCancel={handleCancel} 
         >
             <div className=''>
-                <Carousel arrows infinite={false} className=''>
+                <Carousel arrows infinite={false} className='bg-[#11192D] h-full'>
                     {
                         sheet.map((prob, ind)=>{
-                            return (<div key={ind} className='bg-[#11192D] flex flex-col items-center justify-between p-4'>
+                            return (<div key={ind} className='bg-[#11192D] h-full flex flex-col items-center justify-between p-4'>
                                 <div className='text-start text-slate-100 text-4xl font-bold'>#{prob.id}</div>
                                 <div className='text-center text-slate-400 text-md py-4'>{prob.title}</div>
                                 <div>
@@ -108,6 +108,29 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
                             </div>)
                         })
                     }
+                    <div className='bg-[#11192D] flex flex-col items-center justify-between p-4'>
+                    <div className='text-start text-slate-100 text-xl font-bold'>Tell Echo How Much Time Did It Take For You To Solve The Problems?</div>
+                    {
+                        sheet.map((prob, ind)=>{
+                            return (<div key={ind} className='bg-[#11192D] flex flex-col items-center justify-between p-2'>
+                                <div className='flex flex-row items-center w-full justify-between'>
+                                    <div className='text-center text-slate-400 text-md py-4'>{prob.title.substr(0,15)}...</div>
+                                    <div>
+                                        <input
+                                            type='text'
+                                            className='bg-slate-800 text-slate-100 rounded-md p-2 mt-1 text-sm w-[150px]'
+                                            placeholder='Enter time in minutes'
+                                        />
+                                    </div>
+                                    <div className='text-slate-100 cursor-pointer bg-blue-400 p-1 flex flex-col items-center justify-center rounded-md'>
+                                        <Send/>
+                                    </div>
+                                </div>
+                                <hr/>
+                            </div>)
+                        })
+                    }
+                    </div>
                 </Carousel>
             </div>
         </Modal>
