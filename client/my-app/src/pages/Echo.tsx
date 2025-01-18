@@ -40,8 +40,8 @@ const Echo = () => {
         }
     }, []);
     
-    // const base = 'https://leetassist-1.onrender.com' 
-    const base = 'http://localhost:8000' 
+    const base = 'https://leetassist-1.onrender.com' 
+    // const base = 'http://localhost:8000' 
     
     const [mode, setMode] = useState<number>(0);
     const [platform, setPlatform] = useState<number>(0);

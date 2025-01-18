@@ -14,7 +14,7 @@ except Exception as e:
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "leetassist-1.onrender.com"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "https://leetassist.vercel.app", "leetassist-1.onrender.com"]
 
 
 # Application definition
@@ -37,8 +37,8 @@ EXTERNAL_APPS = [
 INSTALLED_APPS += EXTERNAL_APPS
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
