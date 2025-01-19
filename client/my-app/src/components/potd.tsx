@@ -56,9 +56,7 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
                 children: top
             }
         }));
-        if(response.data.data.length > step){
-            tag = response.data.data[step];
-        } 
+        tag = response.data.data[step % response.data.data.length];
         const sotd = await axios.post(`${nodeBase}/potd/potd`, {
             rating: rating,
             email: email,

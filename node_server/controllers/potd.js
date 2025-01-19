@@ -1,5 +1,6 @@
 const axios = require("axios");
 const data = require('../data.json');
+const rdmp = require('../roadmap.json');
 const Users = require("../models/Users.js");
 const query = `#graphql
 query fetchQuestionsByTags(
@@ -38,20 +39,17 @@ query fetchQuestionsByTags(
 
 exports.fetchProblems = async (req, res) => {
   try {
-    const { tags, limit=1000, skip = 0, email, rating = 1500 } = req.body;
+    let { tags, limit=1000, skip = 0, email, rating = 1500 } = req.body;
 
     if (!tags || !Array.isArray(tags) || !email) {
       return res.status(400).json({ error: "Tags must be provided as an array." });
     }
 
-    const filters = {
-      tags,
-    };
     const user = await Users.findOne({email : email});
     if(!user){
       return res.status(401).json({error : "User not found."});
     }
-
+    
     const oneDayInMillis = 24 * 60 * 60 * 1000; 
     const currentTime = new Date();
     const lastSolvedTime = new Date(user.lastSolved);
@@ -61,7 +59,19 @@ exports.fetchProblems = async (req, res) => {
         data: user.problemsOfTheDay
       })
     }
-
+    for(let topic of rdmp){
+      if(topic.topic === tags[0]){
+        if(topic.p <= user.recentSolved){
+          user.step += 1;
+          user.recentSolved = 0;
+        }
+        break
+      }
+    }
+    
+    const filters = {
+      tags,
+    };
     const response = await axios.post(
       "https://leetcode.com/graphql",
       {
@@ -114,7 +124,7 @@ exports.fetchProblems = async (req, res) => {
     const randomProblems = shuffled.slice(0, 5);
     user.problemsOfTheDay = randomProblems;
     user.lastSolved = new Date();
-    user.save();
+    await user.save();
     return res.status(200).json({ success: true, total: randomProblems.length, data: randomProblems });
   } catch (err) {
     console.error("Error:", err);

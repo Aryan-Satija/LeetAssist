@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
-import { CopyPlus, Target, SendHorizontal, BookOpenText, PencilRuler, LogOut } from 'lucide-react';
+import { CopyPlus, Bot, SendHorizontal, BookOpenText, PencilRuler, LogOut } from 'lucide-react';
 import {UserOutlined} from '@ant-design/icons'
 import { Avatar, Input, Select } from 'antd';
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -301,7 +301,7 @@ const Echo = () => {
     <div className='relative bg-[#11192D] h-[100vh] overflow-x-hidden w-full min-w-[320px]'>
         <div className='bg-[#1e8296] absolute top-[4rem] -z-5 left-[-35rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
         <div className='py-4 w-full flex flex-col items-center justify-between h-full'>
-            <div className='w-full flex flex-row items-center justify-around pb-2' style={{"boxShadow": "0 5px 10px rgba(0, 0, 0, 0.3)"}}>
+            <div className='w-full flex flex-row items-center justify-between pb-2 px-16' style={{"boxShadow": "0 5px 10px rgba(0, 0, 0, 0.3)"}}>
                 {/* header */}
                 <div className='flex flex-row items-center gap-6 text-md text-white font-semibold cursor-pointer'>
                     <div>
@@ -399,11 +399,8 @@ const Echo = () => {
                     </div>
                 </div>
                 <div className='text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2'>
-                    <div className='text-white'><Target/></div>
+                    <div className='text-white'><Bot/></div>
                     Echo
-                </div>
-                <div className='flex flex-row items-center gap-2 text-lg text-white font-semibold cursor-pointer'>
-                    <Avatar className='bg-[#42d0ec]' icon={<UserOutlined />} />
                 </div>
             </div>
             <div className="w-full p-4 rounded-md overflow-y-auto custom-scrollbar h-full" ref={scrollRef}>
