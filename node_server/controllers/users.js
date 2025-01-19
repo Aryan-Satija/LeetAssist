@@ -15,7 +15,7 @@ exports.signup = async (req, res) => {
                 password, 
                 lc_username,
                 cf_username } = req.body;
-
+        let rating = 800
         if(!firstName || !lastName || !password || !lc_username || !cf_username){
             return res.status(400).json(
                 { message: "Please fill in all fields" }
@@ -48,7 +48,7 @@ exports.signup = async (req, res) => {
                 },
               }
             );
-            console.log(response.data);
+            rating = (response.data.data.userContestRanking.rating) - 700.0;
             if(response.data?.errors){
                 return res.status(400).json(
                     { message: "Invalid Leetcode username" }
@@ -77,7 +77,8 @@ exports.signup = async (req, res) => {
             email,
             password: hashedPassword,
             lc_username,
-            cf_username
+            cf_username,
+            rating
         });
 
         return res.status(200).json({

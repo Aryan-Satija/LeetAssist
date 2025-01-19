@@ -15,6 +15,7 @@ interface FormData {
 
 const RegisterPage: React.FC = () => {
   const base = "https://codeassist-q2nt.onrender.com"
+  // const base = "http://127.0.0.1:5173"
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     firstName: "",

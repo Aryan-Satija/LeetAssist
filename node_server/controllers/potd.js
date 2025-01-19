@@ -115,7 +115,7 @@ exports.fetchProblems = async (req, res) => {
     user.problemsOfTheDay = randomProblems;
     user.lastSolved = new Date();
     user.save();
-    return res.json({ total: randomProblems.length, questions: randomProblems });
+    return res.status(200).json({ success: true, total: randomProblems.length, data: randomProblems });
   } catch (err) {
     console.error("Error:", err);
 
@@ -128,3 +128,32 @@ exports.fetchProblems = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+exports.increment = async(req, res) => {
+    try {
+      const {problem, timeTaken, email} = req.body;
+      if(!problem || !timeTaken || !email){
+        return res.status(400).json({
+          success: false,
+          message: 'All fields are mandatory'
+        });
+      }
+      const user = await Users.findOneAndUpdate({email}, 
+        {
+          $inc:{
+            recentSolved: 1
+          }
+        },
+        {
+          new: true
+        }
+      );
+      return res.status(200).json({
+        success: true, message: 'updated successfully'
+      })
+    } catch(err){
+      return res.status(500).json({
+        success: false,
+        message: 'something went wrong'
+      })
+    }
+}

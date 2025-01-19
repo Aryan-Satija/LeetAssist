@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react'
-import { CopyPlus, Target, SendHorizontal, BookOpenText, PencilRuler } from 'lucide-react';
+import { CopyPlus, Target, SendHorizontal, BookOpenText, PencilRuler, LogOut } from 'lucide-react';
 import {UserOutlined} from '@ant-design/icons'
 import { Avatar, Input, Select } from 'antd';
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -15,12 +15,14 @@ import EchoGames from './EchoGames';
 import MiniHole from '../components/MiniHole';
 import Roadmap from '../components/roadmap';
 import POTD from '../components/potd';
+import { useNavigate } from 'react-router-dom';
 Chart.register(...registerables);
 
 const Echo = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const play = queryParams.get('games');
+    const navigate = useNavigate();
     // http://localhost:8000
     // http://leetassist-1.onrender.com
     const [user, setUser] = useState<null | {
@@ -307,6 +309,53 @@ const Echo = () => {
                             <Tooltip.Root>
                                 <Tooltip.Trigger asChild>
                                     <button onClick={()=>{
+                                        localStorage.clear();
+                                        navigate('/login');
+                                    }}>
+                                        <LogOut />
+                                    </button>
+                                </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                    <Tooltip.Content className="TooltipContent" sideOffset={5}>
+                                        <div className='opacity-100'>
+                                            LogOut
+                                        </div>
+                                        <Tooltip.Arrow className="TooltipArrow" />
+                                    </Tooltip.Content>
+                                </Tooltip.Portal>
+                            </Tooltip.Root>
+                        </Tooltip.Provider>
+                    </div>
+                    <div>
+                        <Tooltip.Provider>
+                            <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                    <button onClick={()=>{
+                                        setChat([]);
+                                        setMode(0);
+                                        setText("");
+                                        setPlaceholder("");
+                                        setSession(false)
+                                    }}>
+                                        <CopyPlus/>
+                                    </button>
+                                </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                    <Tooltip.Content className="TooltipContent" sideOffset={5}>
+                                        <div className='opacity-100'>
+                                            New Chat
+                                        </div>
+                                        <Tooltip.Arrow className="TooltipArrow" />
+                                    </Tooltip.Content>
+                                </Tooltip.Portal>
+                            </Tooltip.Root>
+                        </Tooltip.Provider>
+                    </div>
+                    <div>
+                        <Tooltip.Provider>
+                            <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                    <button onClick={()=>{
                                     }}>
                                         <PencilRuler/>
                                     </button>
@@ -335,31 +384,6 @@ const Echo = () => {
                                     <Tooltip.Content className="TooltipContent" sideOffset={5}>
                                         <div className='opacity-100'>
                                             Read (Coming Soon)
-                                        </div>
-                                        <Tooltip.Arrow className="TooltipArrow" />
-                                    </Tooltip.Content>
-                                </Tooltip.Portal>
-                            </Tooltip.Root>
-                        </Tooltip.Provider>
-                    </div>
-                    <div>
-                        <Tooltip.Provider>
-                            <Tooltip.Root>
-                                <Tooltip.Trigger asChild>
-                                    <button onClick={()=>{
-                                        setChat([]);
-                                        setMode(0);
-                                        setText("");
-                                        setPlaceholder("");
-                                        setSession(false)
-                                    }}>
-                                        <CopyPlus/>
-                                    </button>
-                                </Tooltip.Trigger>
-                                <Tooltip.Portal>
-                                    <Tooltip.Content className="TooltipContent" sideOffset={5}>
-                                        <div className='opacity-100'>
-                                            New Chat
                                         </div>
                                         <Tooltip.Arrow className="TooltipArrow" />
                                     </Tooltip.Content>

@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema({
         ],
         default: []
     },      
+    recentSolved:{
+        type: Number,
+        default: 0
+    },
     reasoning: {
         type: Number,
         default: 0

@@ -2,141 +2,169 @@
     {
         "min": 0,
         "max": 1500,
-        "topic": "simulation" 
+        "topic": "simulation", 
+        "p" : 5
     },
     {
         "min": 0,
         "max": 1900,
-        "topic": "math" 
+        "topic": "math",
+        "p" : 15 
     },
     {
         "min": 0,
         "max": 1900,
-        "topic": "array" 
+        "topic": "array",
+        "p" : 15 
     },
     {
         "min": 1500,
         "max": 1700,
-        "topic": "two-pointers" 
+        "topic": "two-pointers",
+        "p" : 10 
     },
     {
         "min": 1500,
         "max": 1700,
-        "topic": "prefix-sum" 
+        "topic": "prefix-sum",
+        "p" : 10 
     },
     {
         "min": 1500,
         "max": 1900,
-        "topic": "sliding-window" 
+        "topic": "sliding-window", 
+        "p" : 10
     },
     {
         "min": 1500,
         "max": 1700,
-        "topic": "linked-list" 
+        "topic": "linked-list",
+        "p" : 10
     },
     {
         "min": 1500,
         "max": 1700,
-        "topic": "matix" 
+        "topic": "matix",
+        "p" : 10 
     },
     {
         "min": 1500,
         "max": 1850,
-        "topic": "recursion" 
+        "topic": "recursion",
+        "p" : 5
     },
     {
         "min": 1500,
         "max": 1850,
-        "topic": "backtracking" 
+        "topic": "backtracking",
+        "p" : 5 
     },
     {
         "min": 1500,
         "max": 1800,
-        "topic": "queue" 
+        "topic": "queue",
+        "p" : 7 
     },
     {
         "min": 1500,
         "max": 1800,
-        "topic": "stack" 
+        "topic": "stack",
+        "p" : 7 
     },
     {
         "min": 1500,
         "max": 1800,
-        "topic": "heap" 
+        "topic": "heap",
+        "p" : 5 
     },
     {
         "min": 1800,
         "max": 2000,
-        "topic": "breadh-first-search" 
+        "topic": "breadh-first-search", 
+        "p" : 7
     },
     {
         "min": 1800,
         "max": 2000,
-        "topic": "depth-first-search" 
+        "topic": "depth-first-search",
+        "p" : 7 
     },
     {
         "min": 1700,
         "max": 2000,
-        "topic": "game-theory"
+        "topic": "game-theory",
+        "p" : 10
     },
     {
         "min": 1700,
         "max": 2100,
-        "topic": "number-theory" 
+        "topic": "number-theory",
+        "p" : 20 
     },
     {
         "min": 1700,
         "max": 2100,
-        "topic": "counting" 
+        "topic": "counting",
+        "p" : 7 
     },
     {
         "min": 1700,
         "max": 2100,
-        "topic": "combinatorics" 
+        "topic": "combinatorics",
+        "p" : 15 
     },
     {
         "min": 1700,
         "max": 2100,
-        "topic": "geometry" 
+        "topic": "geometry",
+        "p" : 15 
     },
     {
         "min": 1850,
         "max": 2200,
-        "topic": "shortest-path" 
+        "topic": "shortest-path",
+        "p" : 10
     },
     {
         "min": 1900,
         "max": 2300,
-        "topic": "monotonic-stack" 
+        "topic": "monotonic-stack",
+        "p" : 10 
     },
     {
         "min": 1900,
         "max": 2300,
-        "topic": "monotonic-queue" 
+        "topic": "monotonic-queue",
+        "p" : 10 
     },
     {
         "min": 1900,
         "max": 2300,
-        "topic": "union-find" 
+        "topic": "union-find",
+        "p" : 15 
     },
     {
         "min": 2000,
         "max": 3000,
-        "topic": "rolling-hash"
+        "topic": "rolling-hash",
+        "p" : 7
     },
     {
         "min": 2000,
         "max": 3000,
-        "topic": "segment-tree"
+        "topic": "segment-tree",
+        "p" : 7
     },
     {
         "min": 2000,
         "max": 3000,
-        "topic": "fenwick-tree"
+        "topic": "fenwick-tree",
+        "p" : 7
     },
     {
         "min": 2000,
         "max": 3000,
-        "topic": "dp"
+        "topic": "dp",
+        "p" : 25
     }
 ]

@@ -3,6 +3,7 @@ import { Carousel, Modal, Table } from 'antd';
 import { Braces, Send } from 'lucide-react';
 import * as Tooltip from "@radix-ui/react-tooltip";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 interface timelineObj{
     children: String
 }
@@ -22,11 +23,27 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState('Content of the modal');
   const nodeBase = 'https://codeassist-q2nt.onrender.com';
+//   const nodeBase = 'http://127.0.0.1:5173';
   const [timeline, setTimeline] = useState<timelineObj[]>([]);
+  const [timeTaken, setTimeTaken] = useState<string>('100');
   const showModal = () => {
     setOpen(true);
   };
   const [sheet, setSheet] = useState<problem[]>([]);
+  const increment = async(problem : String)=>{
+    const id = toast.loading("Please Wait....")
+    try {
+        await axios.post(`${nodeBase}/potd/increment`, {
+            email: email,
+            timeTaken: timeTaken,
+            problem
+        })
+        toast.update(id, {render: "Task Successful", type: "success", isLoading: false, autoClose: 3000})
+    } catch(err){
+        console.log(err);
+        toast.update(id, {render: "Task Failed", type: "error", isLoading: false, autoClose: 3000})
+    }
+  }
   const roadMap = async()=>{
       try{
         let tag = "dynamic-programming" 
@@ -89,7 +106,7 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
           confirmLoading={confirmLoading}
           onCancel={handleCancel} 
         >
-            <div className=''>
+            <div>
                 <Carousel arrows infinite={false} className='bg-[#11192D] h-full'>
                     {
                         sheet.map((prob, ind)=>{
@@ -97,40 +114,36 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
                                 <div className='text-start text-slate-100 text-4xl font-bold'>#{prob.id}</div>
                                 <div className='text-center text-slate-400 text-md py-4'>{prob.title}</div>
                                 <div>
-                                <button className="button" >
-                                    <a href={`https://leetcode.com/problems/${prob.slug}`} target='_blank'>
-                                        <span className='flex flex-row items-center justify-center gap-4 text-md'>
-                                            Solve
-                                        </span>
-                                    </a>
-                                </button>
+                                    <button className="button" >
+                                        <a href={`https://leetcode.com/problems/${prob.slug}`} target='_blank'>
+                                            <span className='flex flex-row items-center justify-center gap-4 text-md'>
+                                                Solve
+                                            </span>
+                                        </a>
+                                    </button>
                                 </div>
-                            </div>)
-                        })
-                    }
-                    <div className='bg-[#11192D] flex flex-col items-center justify-between p-4'>
-                    <div className='text-start text-slate-100 text-xl font-bold'>Tell Echo How Much Time Did It Take For You To Solve The Problems?</div>
-                    {
-                        sheet.map((prob, ind)=>{
-                            return (<div key={ind} className='bg-[#11192D] flex flex-col items-center justify-between p-2'>
-                                <div className='flex flex-row items-center w-full justify-between'>
-                                    <div className='text-center text-slate-400 text-md py-4'>{prob.title.substr(0,15)}...</div>
-                                    <div>
+                                <div className='flex flex-row items-center w-full justify-between py-4 gap-4'>
+                                    <div className='w-full'>
                                         <input
                                             type='text'
-                                            className='bg-slate-800 text-slate-100 rounded-md p-2 mt-1 text-sm w-[150px]'
+                                            className='bg-slate-800 text-slate-100 rounded-md p-2 text-sm w-full'
                                             placeholder='Enter time in minutes'
+                                            name='timeField'
+                                            value={timeTaken}
+                                            onChange={(event : React.ChangeEvent<HTMLInputElement>)=>{
+                                                setTimeTaken(event.target.value);
+                                            }}
                                         />
                                     </div>
-                                    <div className='text-slate-100 cursor-pointer bg-blue-400 p-1 flex flex-col items-center justify-center rounded-md'>
+                                    <div className='text-slate-100 cursor-pointer bg-blue-400 p-1 flex flex-col items-center justify-center rounded-md' onClick={()=>{
+                                        increment(prob.title);
+                                    }}>
                                         <Send/>
                                     </div>
                                 </div>
-                                <hr/>
                             </div>)
                         })
                     }
-                    </div>
                 </Carousel>
             </div>
         </Modal>
