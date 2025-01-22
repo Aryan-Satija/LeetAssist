@@ -1,4 +1,3 @@
-import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Echo from "./pages/Echo";
@@ -6,6 +5,7 @@ import RegisterPage from "./pages/Register";
 import LoginPage from "./pages/Login";
 import PrivateRoutes from "./components/PrivateRoute";
 import Questionarre from "./pages/Questionarre";
+import Blogs from "./pages/Blogs";
 function App() {
   return (
     <div>
@@ -19,6 +19,7 @@ function App() {
           <Route path={"/Questionarre"} element={<Questionarre/>}/>
           <Route path={"/register"} element={<RegisterPage/>}/>
           <Route path={"/login"} element={<LoginPage/>}/>
+          <Route path={"/blogs/:slug"} element={<Blogs/>}/>
         </Routes>
     </div>
   );

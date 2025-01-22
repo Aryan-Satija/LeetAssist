@@ -1,8 +1,6 @@
-import React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import { CopyPlus, Bot, SendHorizontal, BookOpenText, PencilRuler, LogOut } from 'lucide-react';
-import {UserOutlined} from '@ant-design/icons'
-import { Avatar, Input, Select } from 'antd';
+import {  Input, Select } from 'antd';
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -239,6 +237,67 @@ const Echo = () => {
         }
     }
     
+    const completeAnalysis = async()=>{
+        setIsloading(true);
+        setLoading(0)
+        try{
+            const url = `${base}/echo/tags`
+            let response = await axios.post(url, {
+                tags: text
+            }, {
+                onDownloadProgress: (progressEvent) => {
+                  if(progressEvent.progress == undefined) return;
+                  const percentCompleted = (progressEvent.progress * 100);
+                  setLoading(percentCompleted);
+                },
+            });
+            let mx = 0, probtags : string = "";
+            const response_array : {certainty: number, tags: string}[] = Object.values(response.data)
+            response_array.forEach((prob : {certainty: number, tags: string})=>{
+                if(prob.certainty > mx){
+                    mx = prob.certainty
+                    probtags = prob.tags
+                }
+            })
+            let tags = probtags.split(', ') 
+            tags = tags.map(tag=> tag.slice(1, -1))
+            response = await axios.post(`${base}/echo/recommendFromText`, {
+                tags: text.split(' ')
+            }, {
+                onDownloadProgress: (progressEvent) => {
+                  if(progressEvent.progress == undefined) return;
+                  const percentCompleted = (progressEvent.progress * 100);
+                  setLoading(percentCompleted);
+                }
+            });
+            let problems = response.data 
+            const nodeBase = `https://codeassist-q2nt.onrender.com`;
+            response = await axios.post(`${nodeBase}/blogs/fetchBlogs`, {
+                topics: tags
+            });
+            const blogs = response.data.data
+            const analysis = {
+                blogs,
+                problems,
+                tags
+            }
+            setChat((prev)=>{
+                return [...prev, {sender: 'echo', text: 'analysis||' + JSON.stringify(analysis)}];
+            })
+        } catch(error){
+            console.log(error); 
+            setChat((prev)=>{
+                return [...prev, {
+                    sender: 'echo',
+                    text: 'Something Went Wrong 😅🫤🥲❌',
+                }]
+            });
+        } finally{
+            setIsloading(false);
+            setLoading(0);
+        }
+    }
+    
     const sendMessage = async()=>{
         if(text.length == 0){
             toast.info('Invalid Message', {
@@ -294,6 +353,9 @@ const Echo = () => {
                 }]
             });
             await tagsRecommend();
+        }
+        else {
+            await completeAnalysis();
         }
         setText("");
     }
@@ -485,7 +547,7 @@ const Echo = () => {
                                     </div>
                                 </div>
                     }
-                    if(item.text.startsWith('tags')){
+                    else if(item.text.startsWith('tags')){
                         let tags = item.text.slice(6)
                         let arr = tags.split(', ')
                         return <div className='self-start text-[#c8eacc] bg-[#c8eacc]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg max-w-xs shadow'>
@@ -494,6 +556,100 @@ const Echo = () => {
                                     return <div key={index}>{tag} 🔥💯</div>
                                 })
                             }
+                        </div>
+                    }
+                    else if(item.text.startsWith('analysis')){
+                        let report = item.text.slice(10)
+                        let reportObj : {
+                            tags: string[],
+                            blogs:  {
+                                        title: string, 
+                                        content: {title: string, content: string, imageUrl: string}[],
+                                        slug: string,
+                                    }[]
+                            problems: {
+                                        difficulty:  string,
+                                        is_premium:  boolean,
+                                        problem_URL:  string,
+                                        similarity:  string,
+                                        title:  string,
+                                        problem_description: string
+                                    }[]
+                        } = JSON.parse(report);
+
+                        return <div className='self-start text-[#c8eacc] bg-[#c8eacc]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg w-[320px] md:w-[400px] shadow'>
+                            <div className='pb-4'>The Problem Can Be Solved By: </div>
+                            <div className='pb-4'>
+                            {
+                                reportObj.tags.map((tag, index)=>{
+                                    return <div key={index}>{tag} 🔥💯</div>
+                                })
+                            }
+                            </div>
+                            <div className='pb-4'>
+                                Learn About These Topics From Here:
+                            </div>
+                            <div>
+                                {
+                                    reportObj.blogs.map((blog, ind)=>{
+                                        let imageUrl = "";
+                                        for(let cn of blog.content){
+                                            if(cn.imageUrl) imageUrl = cn.imageUrl;
+                                        }
+                                        return <div key={ind} className="self-start text-[#c8eacc] bg-[#c8eacc]/30 border-[1px] border-[#c8eacc] py-2 my-2 px-4 rounded-lg max-w-xs shadow">
+                                            <div className='pb-2'>{blog.title}</div>
+                                            <div className='text-sm'>{blog.content[0].content}...</div>
+                                            {
+                                                imageUrl && <img src={imageUrl}/>
+                                            }
+                                            <div className='text-blue-400 hover:text-blue-600 duration-200 underline cursor-pointer'>
+                                                <a href={`/blogs/${blog.slug}`} target='_blank'>Click Here...</a>
+                                            </div>
+                                        </div>
+                                    })
+                                }
+                                {
+                                    reportObj.blogs.length === 0 && <div className="self-start text-[#f6563a] bg-[#f6563a]/30 border-[1px] border-[#f6563a] py-2 my-2 px-4 rounded-lg max-w-xs shadow">No Blogs Found</div>
+                                }
+                            </div>
+                            <div className='pb-4'>
+                                Find Similar Problems Here:
+                            </div>
+                            <div className='flex flex-col items-center gap-2'>
+                                {
+                                    reportObj.problems.slice(0, 2).map((tmp, ind)=>{
+                                        let difficulty_styles = `text-[#67ec79] bg-[#67ec79]/30 border-[1px] border-[#67ec79] text-center rounded-md`;
+                                        if(tmp.difficulty === 'Medium'){
+                                            difficulty_styles = `text-[#d1e64e] bg-[#d1e64e]/30 border-[1px] border-[#d1e64e] text-center rounded-md`;
+                                        }
+                                        else if(tmp.difficulty === 'Hard'){
+                                            difficulty_styles = `text-[#ef7a7a] bg-[#ef7a7a]/30 border-[1px] border-[#ef7a7a] text-center rounded-md`;
+                                        }
+                                        let premium_styles = `text-[#67ec79] bg-[#67ec79]/30 border-[1px] border-[#67ec79] text-center rounded-md`;
+                                        if(tmp.is_premium === true){
+                                            premium_styles = `text-[#d1e64e] bg-[#d1e64e]/30 border-[1px] border-[#d1e64e] text-center rounded-md`;
+                                        }
+                                        let certainty_styles = `text-[#c8eacc] bg-[#c8eacc]/30 border-[1px] border-[#c8eacc] text-center rounded-md`;
+                                        if(tmp.similarity === 'Very High'){
+                                            certainty_styles = `text-[#6a00ff] bg-[#6a00ff]/30 border-[1px] border-[#6a00ff] text-center rounded-md`;
+                                        }
+                                        else if(tmp.similarity === 'High'){
+                                            certainty_styles = `text-[#c04beb] bg-[#c04beb]/30 border-[1px] border-[#c04beb] text-center rounded-md`;
+                                        }
+                                        else if(tmp.similarity === 'Medium'){
+                                            certainty_styles = `text-[#F3C6F0] bg-[#F3C6F0]/30 border-[1px] border-[#F3C6F0] text-center rounded-md`;
+                                        }
+                                        const celebration = ['🎉🎀🎈🎊', '✅✅⤵️⤵️', '🧡💛💚💙', '✨🎍🎏⭐', '✅✅🔥🔥', '🌟🌈❤️🩷']
+                                        return  <div className="self-start text-[#c8eacc] bg-[#c8eacc]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg max-w-xs shadow cursor-pointer pb-4">
+                                                    <div>{tmp.title} {celebration[Math.floor(Math.random() * celebration.length)]}</div>
+                                                    <div className='py-2 text-slate-50 text-sm'>{tmp.problem_description.slice(0, 100)}....</div>
+                                                    <div className='flex flex-col items-center justify-center py-2'>
+                                                        <div className='text-center text-blue-400 hover:text-blue-600 duration-200 underline'><a href={`${tmp.problem_URL}`} target='_blank'>Click Here To Solve The Problem</a></div>
+                                                    </div>
+                                                </div>
+                                    })
+                                }
+                            </div>
                         </div>
                     }
                     return (
@@ -507,7 +663,7 @@ const Echo = () => {
                     })}
                     {
                         isLoading &&
-                        <div className="self-start bg-[#062109]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg max-w-xs shadow text-white w-[200px]">
+                        <div className="self-start bg-[#062109]/30 border-[1px] border-[#c8eacc] py-2 px-4 rounded-lg max-w-xs shadow text-white w-[200px] h-[200px]">
                             Loading... ({loading}%)
                             <div>
                                 <MiniHole/>
