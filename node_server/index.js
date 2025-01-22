@@ -6,6 +6,7 @@ const gameRoutes = require('./routes/games.js');
 const userRoutes = require('./routes/users.js');
 const roadmapRoutes = require('./routes/roadmap.js');
 const potdRoutes = require('./routes/potd.js');
+const blogsRoutes = require('./routes/blogs.js');
 const app = express();
 dotenv.config();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use('/games', gameRoutes);
 app.use('/auth', userRoutes);
 app.use('/roadmap', roadmapRoutes);
 app.use('/potd', potdRoutes);
+app.use('/blogs', blogsRoutes);
 app.get('/', (req, res)=>{
     return res.json({
         success: true,
