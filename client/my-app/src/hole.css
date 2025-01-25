@@ -3,7 +3,21 @@
     align-items: center;
     justify-content: center;
 }
-  
+
+i {
+  display: block;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+
+  border-radius: 140px;
+  opacity: 0;
+  animation-name: scale;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
 i:nth-child(1) {
   animation-delay: 0.3s;
 }
