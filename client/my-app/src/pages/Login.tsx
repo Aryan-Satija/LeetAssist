@@ -27,6 +27,7 @@ const LoginPage = () => {
     e.preventDefault();
     const id = toast.loading("Please Wait");
     try {
+      axios.get(`https://codeassist-1-4r2r.onrender.com`);
       const response = await axios.post(`${base}/auth/login`, formData)
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));

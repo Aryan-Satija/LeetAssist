@@ -88,13 +88,13 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
-                <button onClick={() => {}}>
+                <button onClick={() => {navigate('?games=true')}}>
                   <PencilRuler />
                 </button>
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content className="TooltipContent" sideOffset={5}>
-                  <div className="opacity-100">Mini Games (Coming Soon)</div>
+                  <div className="opacity-100">Mini Games</div>
                   <Tooltip.Arrow className="TooltipArrow" />
                 </Tooltip.Content>
               </Tooltip.Portal>
@@ -130,6 +130,27 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
         </div>
         <div>
           <Focus/>
+        </div>
+        <div>
+          {
+            user &&
+            <Tooltip.Provider>
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <div className="border-2 px-2 rounded-md cursor-pointer">
+                  {user.rating.toFixed(0)}
+                </div>
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content className="TooltipContent" sideOffset={5}>
+                  <div className="opacity-100">Rating</div>
+                  <Tooltip.Arrow className="TooltipArrow" />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          </Tooltip.Provider>
+
+          }
         </div>
       </div>
       <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">

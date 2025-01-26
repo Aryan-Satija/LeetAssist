@@ -6,22 +6,26 @@ import { useState, useEffect, useRef } from 'react';
 import {toast} from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 type Question = {
     question: string;
     options: string[];
     answer: string;
 };
 const EchoGames = () => {
-    const base = `http://localhost:5173`
+    const base = `https://codeassist-q2nt.onrender.com`
     const navigate = useNavigate();
     const [chat, setChat] = useState<{text: string, sender: string}[]>([]);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [grid, setGrid] = useState<string[]>([]);
     const [isLoading, setIsloading] = useState<Boolean>(false);
     const [loading, setLoading] = useState(0);
+    const [dbg, setDbg] = useState<{question: string, options: string[], answer: string, code: string[]}[]>([])
     const [session, setSession] = useState<Boolean>(false);
     const [options, setOptions] = useState<String[]>([]);
     const [selectedOption, setSelectedOption] = useState<number>(-1);
+    const [language, setLanguage] = useState<String>("");
     const [answered, setAnswered] = useState<number>(1);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     useEffect(()=>{
@@ -144,7 +148,7 @@ const EchoGames = () => {
                         ]
                     });
                     setOptions(questions[0].options);
-                }, 30000);
+                }, 3000);
 
                 setQuestions(questions);
                 setIsloading(false);
@@ -239,7 +243,7 @@ const EchoGames = () => {
                 setSelectedOption(-1);
             }
         }
-        else{
+        else if(answered <= 10){
             let qid = answered-1;
             if(questions[qid].answer === options[selectedOption]){
                 setChat((prev)=>{
@@ -272,10 +276,93 @@ const EchoGames = () => {
                 })
                 setOptions(questions[answered].options);
             }
+            else{
+                setChat((prev) => {
+                    return [...prev, {
+                        "sender": "echo",
+                        "text": "Language You Are Most Familiar With?"
+                    }]
+                })
+                setOptions(["cpp", "java", "py"]);
+            }
             setAnswered(prev => prev+1);
             setSelectedOption(-1);
         }
+        else if(answered <= 15){
+            if(language === ""){
+                setLanguage(options[selectedOption]);
+                const response = await axios.get(`${base}/games/debuggingQuestions/${options[selectedOption]}`,  {
+                    onDownloadProgress: (progressEvent) => {
+                      if(progressEvent.progress == undefined) return;
+                      const percentCompleted = (progressEvent.progress * 100);
+                      setLoading(percentCompleted);
+                    },
+                });
+                setDbg(response.data.data);
+                setChat((prev)=>{
+                    return [...prev,
+                        {
+                            "sender": "echo",
+                            "text": "question||Time to solve some debugging questions! Dare to solve them? 😏."
+                        }
+                    ]
+                })
+                setChat((prev)=>{
+                    return [...prev,
+                        {
+                            "sender": "echo",
+                            "text": "dbg-0"
+                        }
+                    ]
+                })
+                setOptions(response.data.data[0].options);
+                setSelectedOption(-1);
+            }
+            else{
+                let qid = answered-11;
+                if(dbg[qid].answer === options[selectedOption]){
+                    setChat((prev)=>{
+                        return [...prev,
+                            {
+                                "sender": "echo",
+                                "text": "Wohoo, That was correct! ✅✅✅✅"
+                            },
+                        ]
+                    })
+                }
+                else{
+                    setChat((prev)=>{
+                        return [...prev,
+                            {
+                                "sender": "echo",
+                                "text": "That was close! ❌❌❌❌"
+                            },
+                        ]
+                    })
+                }
+                if(answered < 15){
+                    setChat((prev)=>{
+                        return [...prev,
+                            {
+                                "sender": "echo",
+                                "text": `dbg-${answered-10}`
+                            }
+                        ]
+                    })
+                    setOptions(dbg[answered-10].options);
+                }
+                else{
+                    navigate('/echo');
+                }
+                setAnswered(prev => prev+1);
+                setSelectedOption(-1);
+            }
+        }
+        else{
+            navigate('/echo');
+        }
     }
+
     return (
         <div className='relative bg-[#11192D] h-[100vh] overflow-x-hidden w-full min-w-[320px]'>
             <div className='bg-[#1e8296] absolute top-[4rem] -z-5 left-[-35rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
@@ -334,6 +421,30 @@ const EchoGames = () => {
                             const qid = parseInt(item.text.split('-')[1]);
                             return <div className="self-start text-[#fa864c] bg-[#fa864c]/30 border-[1px] border-[#fa864c] py-2 px-4 rounded-lg max-w-xs shadow">
                                 {questions[qid].question}
+                            </div>
+                        }
+                        else if(item.text.startsWith("dbg")){
+                            const qid = parseInt(item.text.split('-')[1]);
+                            return <div className="self-start text-[#fa864c] bg-[#fa864c]/30 border-[1px] border-[#fa864c] py-2 px-4 rounded-lg max-w-xs shadow">
+                                <div>{dbg[qid].question}</div>
+                                <div className="mt-2 text-sm">
+                                    <SyntaxHighlighter 
+                                        language="javascript" 
+                                        style={vscDarkPlus}
+                                        customStyle={{ 
+                                            background: 'transparent',
+                                            padding: 0,
+                                            margin: 0,
+                                            border: 'none',
+                                            overflowX: 'hidden',
+                                            fontSize: '0.875rem',
+                                        }}
+                                        codeTagProps={{ style: { fontFamily: 'Fira Code, monospace' } }}
+                                        PreTag="div"
+                                    >
+                                        {dbg[qid].code.join('\n')}
+                                    </SyntaxHighlighter>
+                                </div>
                             </div>
                         }
                         return (
