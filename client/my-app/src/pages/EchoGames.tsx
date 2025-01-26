@@ -1,6 +1,6 @@
 import React from 'react'
-import { Avatar, Input, Select } from 'antd';
-import { Target, SendHorizontal } from 'lucide-react';
+import { Avatar } from 'antd';
+import { Bot as Target, SendHorizontal } from 'lucide-react';
 import {UserOutlined} from '@ant-design/icons'
 import { useState, useEffect, useRef } from 'react';
 import {toast} from 'react-toastify';
@@ -15,7 +15,7 @@ const EchoGames = () => {
     const base = `http://localhost:5173`
     const navigate = useNavigate();
     const [chat, setChat] = useState<{text: string, sender: string}[]>([]);
-    const [gridQuestions, setGridQuestions] = useState<Question[]>([]);
+    const [questions, setQuestions] = useState<Question[]>([]);
     const [grid, setGrid] = useState<string[]>([]);
     const [isLoading, setIsloading] = useState<Boolean>(false);
     const [loading, setLoading] = useState(0);
@@ -133,7 +133,6 @@ const EchoGames = () => {
                     options: ["Yes", "No"],
                     answer: grid.includes(response.data.randomInstance) ? "Yes" : "No",
                 });
-                console.log(questions);
                 setTimeout(() => {
                     setGrid(Array(16).fill("X")); 
                     setChat((prev)=>{
@@ -147,7 +146,7 @@ const EchoGames = () => {
                     setOptions(questions[0].options);
                 }, 30000);
 
-                setGridQuestions(questions);
+                setQuestions(questions);
                 setIsloading(false);
                 setLoading(100);
                 setSelectedOption(-1);
@@ -158,9 +157,7 @@ const EchoGames = () => {
         }
         else if(answered <= 5){
             let qid = answered-1;
-            console.log(gridQuestions[qid].answer);
-            console.log(options[selectedOption]);
-            if(gridQuestions[qid].answer === options[selectedOption]){
+            if(questions[qid].answer === options[selectedOption]){
                 setChat((prev)=>{
                     return [...prev,
                         {
@@ -189,7 +186,7 @@ const EchoGames = () => {
                         }
                     ]
                 })
-                setOptions(gridQuestions[answered].options);
+                setOptions(questions[answered].options);
             }
             setAnswered(prev => prev+1);
             setSelectedOption(-1);
@@ -217,15 +214,14 @@ const EchoGames = () => {
                 })
                 
                 const riddles = response.data.questions;
-                const newgridquestions = [...gridQuestions, ...riddles.map((riddle : Question)=>{
+                const newgridquestions = [...questions, ...riddles.map((riddle : Question)=>{
                     return {
                         question: riddle.question,
                         answer: riddle.answer,
                         options: riddle.options
                     }
                 })];
-                console.log(newgridquestions);
-                setGridQuestions(newgridquestions);
+                setQuestions(newgridquestions);
 
                 
                 
@@ -245,9 +241,7 @@ const EchoGames = () => {
         }
         else{
             let qid = answered-1;
-            console.log(gridQuestions[qid].answer);
-            console.log(options[selectedOption]);
-            if(gridQuestions[qid].answer === options[selectedOption]){
+            if(questions[qid].answer === options[selectedOption]){
                 setChat((prev)=>{
                     return [...prev,
                         {
@@ -276,7 +270,7 @@ const EchoGames = () => {
                         }
                     ]
                 })
-                setOptions(gridQuestions[answered].options);
+                setOptions(questions[answered].options);
             }
             setAnswered(prev => prev+1);
             setSelectedOption(-1);
@@ -298,7 +292,7 @@ const EchoGames = () => {
                             Echo
                         </div>
                         <div className='flex flex-row items-center gap-2 text-lg text-white font-semibold cursor-pointer'>
-                            <Avatar className='bg-[#42d0ec]' icon={<UserOutlined />} />
+                        
                         </div>
                 </div>
                 <div ref={scrollRef} className="w-full p-4 rounded-md overflow-y-auto custom-scrollbar h-full">
@@ -339,7 +333,7 @@ const EchoGames = () => {
                         else if(item.text.startsWith("gridquestion")){
                             const qid = parseInt(item.text.split('-')[1]);
                             return <div className="self-start text-[#fa864c] bg-[#fa864c]/30 border-[1px] border-[#fa864c] py-2 px-4 rounded-lg max-w-xs shadow">
-                                {gridQuestions[qid].question}
+                                {questions[qid].question}
                             </div>
                         }
                         return (

@@ -1,9 +1,10 @@
 import {useEffect, useState, Dispatch, SetStateAction} from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import { CopyPlus, Bot, BookOpenText, PencilRuler, LogOut } from 'lucide-react';
+import { CopyPlus, Bot, BookOpenText, PencilRuler, LogOut, Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import POTD from "./potd";
 import Roadmap from "./roadmap";
+import Focus from "./focus";
 interface props{
     setChat : Dispatch<SetStateAction<{text: string, sender: string}[]>>,
     setMode: Dispatch<SetStateAction<number>>,
@@ -126,6 +127,9 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             step={user ? user.step : 0}
             email={user ? user.email : ""}
           />
+        </div>
+        <div>
+          <Focus/>
         </div>
       </div>
       <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
