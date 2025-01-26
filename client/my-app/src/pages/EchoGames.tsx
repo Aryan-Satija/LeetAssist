@@ -148,7 +148,7 @@ const EchoGames = () => {
                         ]
                     });
                     setOptions(questions[0].options);
-                }, 3000);
+                }, 30000);
 
                 setQuestions(questions);
                 setIsloading(false);
