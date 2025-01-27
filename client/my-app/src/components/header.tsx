@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import POTD from "./potd";
 import Roadmap from "./roadmap";
 import Focus from "./focus";
+import axios from "axios";
 interface props{
     setChat : Dispatch<SetStateAction<{text: string, sender: string}[]>>,
     setMode: Dispatch<SetStateAction<number>>,
@@ -13,15 +14,21 @@ interface props{
     setSession: Dispatch<SetStateAction<Boolean>>
 };
 const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) => {
+    const base = 'https://codeassist-1-4r2r.onrender.com' 
     const navigate = useNavigate();
     const [notplay, setPlay] = useState(false);
     const [user, setUser] = useState<null | {
-        rating: number,
+        lc_rating: number,
+        cf_rating: number,
+        problemsSolved: number,
         step: number,
+        debugging: number,
+        memory: number,
+        reasoning: number,
         email: string,
         lastPlayed: string
     }>(null);
-
+    const [rating, setRating] = useState<number | null>(null);
     useEffect(()=>{
         const storedUser = localStorage.getItem('user');
         if(storedUser != null){
@@ -32,6 +39,24 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             }
         }
     }, []);
+    useEffect(()=>{
+      if(user === null) return;
+      (async()=>{
+        try{
+          const response = await axios.post(`${base}/echo/predict`, {
+            "lc": user.lc_rating,
+            "cf": user.cf_rating,
+            "mem": user.memory,
+            "rsn": user.reasoning,
+            "dbg": user.debugging,
+            "pbm": user.problemsSolved
+          })
+          setRating(response.data.score);
+        } catch(err){
+
+        }
+      })();
+    }, [user]);
     useEffect(()=>{
         setPlay(isDisabled());
     }, [user]);
@@ -138,11 +163,11 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
           </Tooltip.Provider>
         </div>
         <div>
-          <Roadmap rating={user ? user.rating + 700 : 1500} />
+          <Roadmap rating={rating} />
         </div>
         <div>
           <POTD
-            rating={user ? user.rating + 700 : 1500}
+            rating={rating}
             step={user ? user.step : 0}
             email={user ? user.email : ""}
           />
@@ -157,7 +182,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
                 <div className="border-2 px-2 rounded-md cursor-pointer">
-                  {user.rating.toFixed(0)}
+                  {rating ? rating.toFixed(0) : "Calculating..."}
                 </div>
               </Tooltip.Trigger>
               <Tooltip.Portal>

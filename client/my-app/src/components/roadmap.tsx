@@ -7,7 +7,7 @@ interface timelineObj{
     children: String
 }
 interface props {
-  rating: Number
+  rating: Number | null
 }
 const Roadmap: React.FC<props> = ({rating}) => {
   const [open, setOpen] = useState(false);
@@ -49,7 +49,7 @@ const Roadmap: React.FC<props> = ({rating}) => {
       <Tooltip.Provider>
           <Tooltip.Root>
               <Tooltip.Trigger asChild>
-                  <button onClick={roadMap}>
+                  <button onClick={roadMap} disabled={rating === null ? true: false}>
                       <Network />
                   </button>
               </Tooltip.Trigger>

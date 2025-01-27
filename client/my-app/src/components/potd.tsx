@@ -8,7 +8,7 @@ interface timelineObj{
     children: String
 }
 interface props {
-  rating: Number,
+  rating: Number | null,
   step: number,
   email: String
 }
@@ -83,7 +83,7 @@ const POTD: React.FC<props> = ({rating, step, email}) => {
         <Tooltip.Provider>
               <Tooltip.Root>
                     <Tooltip.Trigger asChild>
-                        <button onClick={roadMap}>
+                        <button onClick={roadMap} disabled={rating === null ? true : false}>
                             <Braces />
                         </button>
                     </Tooltip.Trigger>

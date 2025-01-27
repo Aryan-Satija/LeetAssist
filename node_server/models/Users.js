@@ -20,9 +20,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    rating: {
+    cf_rating: {
         type: Number,
         default: 800
+    },
+    lc_rating: {
+        type: Number,
+        default: 1500
     },
     lc_username: {
         type: String
@@ -37,6 +41,10 @@ const userSchema = new mongoose.Schema({
     lastSolved: {
         type: Date,
         default: new Date('1970-01-01T00:00:00Z')
+    },
+    problemsSolved: {
+        type: Number,
+        default: 0
     },
     problemsOfTheDay: {
         type: [
