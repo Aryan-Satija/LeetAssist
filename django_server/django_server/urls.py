@@ -27,5 +27,6 @@ urlpatterns = [
     path('echo/recommendFromText', recommendFromText),
     path('echo/tags', tagsPredictor),
     path('echo/test', test),
+    path('echo/predict', predict_eq),
     path('', lambda request: JsonResponse({'message': 'Server Is Running'}))
 ]
