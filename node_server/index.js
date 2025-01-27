@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const { PythonShell } = require('python-shell');
 const {connect} = require('./config/database.js');
 const gameRoutes = require('./routes/games.js');
 const userRoutes = require('./routes/users.js');
@@ -24,7 +25,6 @@ app.get('/', (req, res)=>{
         message: `Server is running at ${PORT}`
     })
 });
-
 app.listen(PORT, ()=>{
     console.log(`Server is running at ${PORT}`)
 })

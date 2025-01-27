@@ -11,6 +11,9 @@ import json
 
 ps = PorterStemmer()
 
+with open('../model/equivalent_rating_model.pkl') as f:
+    equivalent_rating_model = pickle.load(f)
+    
 with open('../model/dataset_ver_2.pkl', 'rb') as f:
     dataset = pickle.load(f)
 
@@ -77,6 +80,17 @@ def recommend(request, problem_id):
         })   
     return JsonResponse(response, safe=False)
 
+@csrf_exempt
+def predict(request):
+    lc = json.loads(request.body).get('lc')
+    cf = json.loads(request.body).get('cf')
+    dbg = json.loads(request.body).get('dbg')
+    mem = json.loads(request.body).get('mem')
+    rsn = json.loads(request.body).get('rsn')
+    pbm = json.loads(request.body).get('pbm')
+    input_features = [lc, cf, dbg, mem, rsn, pbm]
+    score = equivalent_rating_model.predict([input_features])[0]
+    return JsonResponse({'score': score})
 def rating(request, handle_name):
     url = f"https://codeforces.com/api/user.rating?handle={handle_name}"
     try:

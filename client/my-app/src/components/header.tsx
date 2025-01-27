@@ -14,10 +14,12 @@ interface props{
 };
 const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) => {
     const navigate = useNavigate();
+    const [notplay, setPlay] = useState(false);
     const [user, setUser] = useState<null | {
         rating: number,
         step: number,
-        email: String
+        email: string,
+        lastPlayed: string
     }>(null);
 
     useEffect(()=>{
@@ -30,6 +32,17 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             }
         }
     }, []);
+    useEffect(()=>{
+        setPlay(isDisabled());
+    }, [user]);
+    const isDisabled = ()=>{
+      if(user === null) return true;
+      const lastDate = new Date(user.lastPlayed);
+      const currentDate = new Date();
+      const oneDayMillis = 24*60*60*1000;
+      if(currentDate.getTime() - lastDate.getTime() >= oneDayMillis) return false;
+      return true
+    }
   return (
     <div
       className="w-full flex flex-row items-center justify-between pb-2 px-16"
@@ -88,13 +101,19 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
-                <button onClick={() => {navigate('?games=true')}}>
+                <button onClick={() => {navigate('?games=true')}} disabled={notplay}>
                   <PencilRuler />
                 </button>
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content className="TooltipContent" sideOffset={5}>
-                  <div className="opacity-100">Mini Games</div>
+                  <div className="opacity-100">
+                    <p>Mini Games</p> 
+                    {
+                      notplay &&
+                      <p>Come Back Tomorrow</p>
+                    }
+                  </div>
                   <Tooltip.Arrow className="TooltipArrow" />
                 </Tooltip.Content>
               </Tooltip.Portal>
