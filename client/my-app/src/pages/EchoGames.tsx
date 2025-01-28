@@ -28,6 +28,9 @@ const EchoGames = () => {
     const [language, setLanguage] = useState<String>("");
     const [answered, setAnswered] = useState<number>(1);
     const scrollRef = useRef<HTMLDivElement | null>(null);
+    const [_mem, set_Mem] = useState<number>(0);
+    const [_dbg, set_Dbg] = useState<number>(0);
+    const [_rsn, set_Rsn] = useState<number>(0);
     useEffect(()=>{
         if(scrollRef.current){
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -82,6 +85,7 @@ const EchoGames = () => {
     
         return questions;
     }
+    console.log(_mem, _dbg, _rsn);
     const sendMessage = async()=>{
         if(selectedOption === -1){
             toast.info('Select an option', {
@@ -170,6 +174,7 @@ const EchoGames = () => {
                         },
                     ]
                 })
+                set_Mem(prev => prev + 1);
             }
             else{
                 setChat((prev)=>{
@@ -254,6 +259,7 @@ const EchoGames = () => {
                         },
                     ]
                 })
+                set_Rsn(prev => prev + 1);
             }
             else{
                 setChat((prev)=>{
@@ -329,6 +335,7 @@ const EchoGames = () => {
                             },
                         ]
                     })
+                    set_Dbg(prev => prev + 1);
                 }
                 else{
                     setChat((prev)=>{
@@ -352,6 +359,22 @@ const EchoGames = () => {
                     setOptions(dbg[answered-10].options);
                 }
                 else{
+                    const userdata = localStorage.getItem("user");
+                    if(!userdata){
+                        navigate('/echo');
+                        return;
+                    }
+                    const user = JSON.parse(userdata);
+                    await axios.post("https://codeassist-q2nt.onrender.com/games/update", {
+                        mem: _mem,
+                        rsn: _rsn,
+                        dbg: _dbg,
+                        email: user.email
+                    });
+                    user.memory = _mem
+                    user.debugging = _dbg
+                    user.reasoning = _rsn
+                    localStorage.setItem('user', JSON.stringify(user))
                     navigate('/echo');
                 }
                 setAnswered(prev => prev+1);

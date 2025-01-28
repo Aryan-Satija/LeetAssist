@@ -1,4 +1,5 @@
 const Riddles = require('../models/Riddles.js')
+const User = require('../models/Users.js');
 exports.gridGame = async(req, res) => {
     try{
         const items = [
@@ -71,6 +72,33 @@ exports.riddles = async(req, res) => {
         return res.status(500).json({
             success: false,
             questions: []
+        })
+    }
+}
+
+exports.update = async(req, res)=>{
+    try{
+        const {email, mem, dbg, rsn} = req.body;
+        if(!email || !mem || !dbg || !rsn) {
+            return res.status(400).json({
+                success: false,
+                message: 'All fields are required'
+            })
+        }
+        await User.findOneAndUpdate({email}, {
+            memory: mem,
+            reasoning: rsn,
+            debugging: dbg,
+            lastPlayed: new Date()
+        })
+        return res.status(200).json({
+            success: true,
+            message: 'Task Successful'
+        })
+    } catch(err){
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
         })
     }
 }

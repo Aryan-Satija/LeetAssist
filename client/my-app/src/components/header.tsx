@@ -64,12 +64,12 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
         setPlay(isDisabled());
     }, [user]);
     const isDisabled = ()=>{
-      if(user === null) return true;
+      if(user === null) return false;
       const lastDate = new Date(user.lastPlayed);
       const currentDate = new Date();
       const oneDayMillis = 24*60*60*1000;
-      if(currentDate.getTime() - lastDate.getTime() >= oneDayMillis) return false;
-      return true
+      if(currentDate.getTime() - lastDate.getTime() >= oneDayMillis) return true;
+      return false
     }
   return (
     <div
@@ -135,7 +135,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
               </Tooltip.Trigger>
               <Tooltip.Portal>
                 <Tooltip.Content className="TooltipContent" sideOffset={5}>
-                  <div className="opacity-100">
+                  <div className="opacity-100 flex flex-col items-center justify-center">
                     <p>Mini Games</p> 
                     {
                       notplay &&
@@ -173,7 +173,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
                   if(user === null) return;
                   const id = toast.loading("Please Wait");
                   try{
-                    const response = await axios.post(`${base}/auth/sync`, {
+                    const response = await axios.post(`https://codeassist-q2nt.onrender.com/auth/sync`, {
                       lc_username: user.lc_username,
                       cf_username: user.cf_username,
                       email: user.email
@@ -239,11 +239,25 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
               </Tooltip.Portal>
             </Tooltip.Root>
           </Tooltip.Provider>
-
           }
         </div>
+        <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-2 border-2 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+            {
+              user ? user.memory : 0
+            }
+        </div>
+        <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-2 border-2 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+            {
+              user ? user.reasoning : 0
+            }
+        </div>
+        <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-2 border-2 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+            {
+              user ? user.debugging : 0
+            }
+        </div>
       </div>
-      <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+      <div className="text-[#67c2ec] border-2 bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
         <div className="text-white">
           <Bot />
         </div>
