@@ -118,6 +118,108 @@ exports.signup = async (req, res) => {
         })
     }
 }
+exports.sync = async(req, res) => {
+    try {
+        const {  email, 
+                lc_username,
+                cf_username } = req.body;
+        let cf_rating = 800, lc_rating = 1500, problemsSolved = 0
+        if(!email || !lc_username || !cf_username){
+            return res.status(400).json(
+                { message: "Please fill in all fields" }
+            );
+        }
+        try{
+            let url = `https://codeforces.com/api/user.rating?handle=${cf_username}`
+            const response = await axios.get(url)
+            cf_rating = response.data.result.pop().newRating
+        } catch(err){
+            console.log(err);
+            return res.status(400).json(
+                { message: "Invalid Codeforces username" }
+            );
+        }
+        try{
+            let url = "https://leetcode.com/graphql"
+            const ratingQuery = `
+            query {
+              userContestRanking(username: "${lc_username}") {
+                rating
+              }
+            }
+          `;
+        
+            const problemsQuery = `
+                query {
+                matchedUser(username: "${lc_username}") {
+                    submitStats: submitStatsGlobal {
+                    acSubmissionNum {
+                        difficulty
+                        count
+                    }
+                    }
+                }
+                }
+            `;
+            const ratingResponse = await axios.post(
+              url,
+              { query: ratingQuery },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            lc_rating = ratingResponse.data.data.userContestRanking?.rating || 0;
+            const problemsResponse = await axios.post(
+                url,
+                { query: problemsQuery },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+            );
+            problemsSolved = problemsResponse.data.data.matchedUser.submitStats.acSubmissionNum.find(
+                (item) => item.difficulty === "All"
+            )?.count || 0;
+        } catch(err){
+            console.log(err);
+            return res.status(400).json(
+                { message: "Invalid Leetcode username" }
+            );
+        }
+
+        const existingUser = await User.findOne({email});
+
+        if(!existingUser){
+            return res.status(400).json({
+                success: false,
+                message: "User doesn't exists"
+            })
+        }
+
+        existingUser.lc_rating = lc_rating;
+        existingUser.problems_solved = problemsSolved;
+        existingUser.cf_rating = cf_rating;
+        existingUser.save();
+
+        return res.status(200).json({
+            success: true,
+            lc_rating: lc_rating,
+            cf_rating: cf_rating,
+            problems_solved: problemsSolved,
+            message: 'Sync successful'
+        });
+    } catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success: true,
+            message: "Something went wrong"
+        })
+    }
+}
 
 exports.login = async(req, res)=>{
     try{

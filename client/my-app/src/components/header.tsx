@@ -1,11 +1,12 @@
 import {useEffect, useState, Dispatch, SetStateAction} from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import { CopyPlus, Bot, BookOpenText, PencilRuler, LogOut, Activity } from 'lucide-react';
+import { CopyPlus, Bot, BookOpenText, PencilRuler, LogOut, RefreshCcwDot  } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import POTD from "./potd";
 import Roadmap from "./roadmap";
 import Focus from "./focus";
 import axios from "axios";
+import { toast } from "react-toastify";
 interface props{
     setChat : Dispatch<SetStateAction<{text: string, sender: string}[]>>,
     setMode: Dispatch<SetStateAction<number>>,
@@ -18,6 +19,8 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
     const navigate = useNavigate();
     const [notplay, setPlay] = useState(false);
     const [user, setUser] = useState<null | {
+        lc_username: string,
+        cf_username: string,
         lc_rating: number,
         cf_rating: number,
         problemsSolved: number,
@@ -156,6 +159,49 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
               <Tooltip.Portal>
                 <Tooltip.Content className="TooltipContent" sideOffset={5}>
                   <div className="opacity-100">Read (Coming Soon)</div>
+                  <Tooltip.Arrow className="TooltipArrow" />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          </Tooltip.Provider>
+        </div>
+        <div>
+          <Tooltip.Provider>
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <button onClick={async() => {
+                  if(user === null) return;
+                  const id = toast.loading("Please Wait");
+                  try{
+                    const response = await axios.post(`${base}/auth/sync`, {
+                      lc_username: user.lc_username,
+                      cf_username: user.cf_username,
+                      email: user.email
+                    }) 
+                    setUser((prevUser) => {
+                      if (!prevUser) return null; 
+                    
+                      return {
+                        ...prevUser,
+                        lc_rating: response.data.lc_rating,
+                        cf_rating: response.data.cf_rating,
+                        problemsSolved: response.data.problems_solved,
+                      };
+                    });
+                    
+                    
+                    localStorage.setItem("user", JSON.stringify(user));
+                    toast.update(id, {render: "Task successful", type: "success", isLoading: false, autoClose: 3000});
+                  } catch(err){
+                    toast.update(id, {render: "Something went wrong", type: "error", isLoading: false, autoClose: 3000});
+                  }
+                }} className="hover:animate-spin">
+                  <RefreshCcwDot />
+                </button>
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content className="TooltipContent" sideOffset={5}>
+                  <div className="opacity-100">Sync Rating</div>
                   <Tooltip.Arrow className="TooltipArrow" />
                 </Tooltip.Content>
               </Tooltip.Portal>
