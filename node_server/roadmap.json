@@ -61,31 +61,31 @@
     },
     {
         "min": 1200,
-        "max": 1500,
+        "max": 1400,
         "topic": "queue",
         "p" : 7 
     },
     {
         "min": 1200,
-        "max": 1500,
+        "max": 1400,
         "topic": "stack",
         "p" : 7 
     },
     {
         "min": 1300,
-        "max": 1500,
+        "max": 1400,
         "topic": "heap",
         "p" : 5 
     },
     {
         "min": 1200,
-        "max": 1800,
+        "max": 1500,
         "topic": "breadh-first-search", 
         "p" : 7
     },
     {
         "min": 1200,
-        "max": 1800,
+        "max": 1500,
         "topic": "depth-first-search",
         "p" : 7 
     },
@@ -97,31 +97,31 @@
     },
     {
         "min": 1500,
-        "max": 2100,
+        "max": 1700,
         "topic": "number-theory",
         "p" : 20 
     },
     {
         "min": 1500,
-        "max": 2100,
+        "max": 1700,
         "topic": "counting",
         "p" : 7 
     },
     {
         "min": 1500,
-        "max": 2100,
+        "max": 1700,
         "topic": "combinatorics",
         "p" : 15 
     },
     {
         "min": 1500,
-        "max": 2100,
+        "max": 1700,
         "topic": "geometry",
         "p" : 15 
     },
     {
         "min": 1200,
-        "max": 1800,
+        "max": 1400,
         "topic": "shortest-path",
         "p" : 10
     },
@@ -138,8 +138,8 @@
         "p" : 10 
     },
     {
-        "min": 1500,
-        "max": 2100,
+        "min": 1200,
+        "max": 1700,
         "topic": "union-find",
         "p" : 15 
     },

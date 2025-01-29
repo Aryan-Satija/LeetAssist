@@ -1,6 +1,6 @@
 import {useEffect, useState, Dispatch, SetStateAction} from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import { CopyPlus, Bot, BookOpenText, PencilRuler, LogOut, RefreshCcwDot  } from 'lucide-react';
+import { CopyPlus, Bot, BookOpenText, PencilRuler, LogOut, RefreshCcwDot, Swords  } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import POTD from "./potd";
 import Roadmap from "./roadmap";
@@ -218,6 +218,25 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             step={user ? user.step : 0}
             email={user ? user.email : ""}
           />
+        </div>
+        <div className="hidden md:block hover:scale-125 duration-200">
+          <Tooltip.Provider>
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <button onClick={async() => {
+                 
+                }} className="hover:animate-spin ">
+                  <Swords/>
+                </button>
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content className="TooltipContent" sideOffset={5}>
+                  <div className="opacity-100">Self Duels</div>
+                  <Tooltip.Arrow className="TooltipArrow" />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          </Tooltip.Provider>
         </div>
         <div className="hidden md:block hover:scale-125 duration-200 horizontal-shake">
           <Focus/>
