@@ -321,11 +321,11 @@ const Query = ({setChat, setMode, setText, setPlaceholder, setSession, setIsload
         setText("");
     }
     return (
-    <div className="px-8 flex flex-row items-center justify-between gap-2 mt-4 w-full">
+    <div className="px-2 flex flex-row items-center justify-between gap-2 mt-4 w-full">
       {/* footer */}
       {!session ? (
         <div
-          className="w-[108px] text-[#67c2ec] bg-[#319dce]/30 p-1 rounded-md cursor-pointer duration-200 animate-bounce"
+          className="w-[128px] text-[#67c2ec] bg-[#319dce]/30 p-1 rounded-md text-center cursor-pointer duration-200 animate-bounce"
           onClick={() => {
             setText("Hey Echo!");
           }}

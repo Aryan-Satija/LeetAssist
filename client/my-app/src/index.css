@@ -5,7 +5,27 @@
 button {
 	all: unset;
 }
+.horizontal-shake:hover {
+	animation: skew-x-shaking 0.35s infinite;
+	scale:1.25
+}
+@keyframes skew-x-shaking {
+ 0% { transform: skewX(-15deg); }
+ 5% { transform: skewX(15deg); }
+ 10% { transform: skewX(-15deg); }
+ 15% { transform: skewX(15deg); }
+ 20% { transform: skewX(0deg); }
+ 100% { transform: skewX(0deg); }
+}
 
+@keyframes skew-y-shaking {
+ 0% { transform: skewY(-15deg); }
+ 5% { transform: skewY(15deg); }
+ 10% { transform: skewY(-15deg); }
+ 15% { transform: skewY(15deg); }
+ 20% { transform: skewY(0deg); }
+ 100% { transform: skewY(0deg); }
+}
 .TooltipContent {
 	border-radius: 4px;
 	padding: 10px 15px;

@@ -7,6 +7,7 @@ import Roadmap from "./roadmap";
 import Focus from "./focus";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../index.css";
 interface props{
     setChat : Dispatch<SetStateAction<{text: string, sender: string}[]>>,
     setMode: Dispatch<SetStateAction<number>>,
@@ -73,12 +74,12 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
     }
   return (
     <div
-      className="w-full flex flex-row items-center justify-between pb-2 px-16"
+      className="w-full flex flex-row items-center justify-between pb-2 px-2 md:px-16"
       style={{ boxShadow: "0 5px 10px rgba(0, 0, 0, 0.3)" }}
     >
       {/* header */}
       <div className="flex flex-row items-center gap-6 text-md text-white font-semibold cursor-pointer">
-        <div>
+        <div className="hover:scale-125 duration-200">
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -100,7 +101,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             </Tooltip.Root>
           </Tooltip.Provider>
         </div>
-        <div>
+        <div className="hidden sm:block hover:scale-125 duration-200">
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -125,7 +126,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             </Tooltip.Root>
           </Tooltip.Provider>
         </div>
-        <div>
+        <div className="hidden sm:block hover:scale-125 duration-200">
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -148,7 +149,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             </Tooltip.Root>
           </Tooltip.Provider>
         </div>
-        <div>
+        <div className="hidden md:block hover:scale-125 duration-200">
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -165,7 +166,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             </Tooltip.Root>
           </Tooltip.Provider>
         </div>
-        <div>
+        <div className="hidden md:block hover:scale-125 duration-200">
           <Tooltip.Provider>
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
@@ -195,7 +196,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
                   } catch(err){
                     toast.update(id, {render: "Something went wrong", type: "error", isLoading: false, autoClose: 3000});
                   }
-                }} className="hover:animate-spin">
+                }} className="hover:animate-spin ">
                   <RefreshCcwDot />
                 </button>
               </Tooltip.Trigger>
@@ -208,20 +209,20 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
             </Tooltip.Root>
           </Tooltip.Provider>
         </div>
-        <div>
+        <div className="hidden sm:block hover:scale-125 duration-200">
           <Roadmap rating={rating} />
         </div>
-        <div>
+        <div className="hidden sm:block hover:scale-125 duration-200">
           <POTD
             rating={rating}
             step={user ? user.step : 0}
             email={user ? user.email : ""}
           />
         </div>
-        <div>
+        <div className="hidden md:block hover:scale-125 duration-200 horizontal-shake">
           <Focus/>
         </div>
-        <div>
+        <div className="hidden md:block">
           {
             user &&
             <Tooltip.Provider>
@@ -241,23 +242,23 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
           </Tooltip.Provider>
           }
         </div>
-        <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-2 border-2 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+        <div className="text-[#67c2ec] hidden bg-[#319dce]/30 px-4 py-2 rounded-full font-semibold cursor-pointer lg:flex flex-row items-center gap-2">
             {
               user ? user.memory : 0
             }
         </div>
-        <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-2 border-2 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+        <div className="text-[#67c2ec] hidden bg-[#319dce]/30 px-4 py-2 rounded-full font-semibold cursor-pointer lg:flex flex-row items-center gap-2">
             {
               user ? user.reasoning : 0
             }
         </div>
-        <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-2 border-2 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+        <div className="text-[#67c2ec] hidden bg-[#319dce]/30 px-4 py-2 rounded-full font-semibold cursor-pointer lg:flex flex-row items-center gap-2">
             {
               user ? user.debugging : 0
             }
         </div>
       </div>
-      <div className="text-[#67c2ec] border-2 bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
+      <div className="text-[#67c2ec] bg-[#319dce]/30 px-4 py-1 rounded-full font-semibold cursor-pointer flex flex-row items-center gap-2">
         <div className="text-white">
           <Bot />
         </div>

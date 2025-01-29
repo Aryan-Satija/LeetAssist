@@ -64,7 +64,7 @@ const RegisterPage: React.FC = () => {
         submitted && 
         <ConfettiExplosion/>
       }
-      <div className='bg-[#1e8296] absolute top-[8rem] -z-5 left-[-15rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
+      <div className='bg-[#1e8296] absolute top-[8rem] -z-5 left-[-15rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[48.75rem]'></div>
       <div className="w-full max-w-md bg-transparent backdrop-blur-lg p-6 rounded-lg shadow-lg shadow-slate-700">
         <h2 className="text-2xl font-bold text-gray-100 mb-6 text-center">
           Register

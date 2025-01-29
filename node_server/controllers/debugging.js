@@ -1,527 +1,532 @@
-const cpp = [
-    {
-      "question": "Why does the following code give a segmentation fault?",
-      "code": [
-        "int* arr = new int[5];",
-        "for (int i = 0; i <= 5; ++i) {",
-        "    arr[i] = i;",
-        "}",
-        "delete[] arr;"
-      ],
-      "options": [
-        "a) delete[] arr is incorrect syntax.",
-        "b) The loop accesses memory out of bounds.",
-        "c) The pointer is null.",
-        "d) The new keyword is incorrect."
-      ],
-      "answer": "b) The loop accesses memory out of bounds."
-    },
-    {
-      "question": "What issue do you see in this code, and how would you fix it?",
-      "code": [
-        "int* ptr = new int(10);",
-        "delete ptr;",
-        "*ptr = 20;"
-      ],
-      "options": [
-        "a) You should use ptr = nullptr; after deleting the pointer.",
-        "b) Memory leak due to unused new.",
-        "c) No issues, the code is fine.",
-        "d) Use free(ptr) instead of delete ptr."
-      ],
-      "answer": "a) You should use ptr = nullptr; after deleting the pointer."
-    },
-    {
-      "question": "Identify the memory leak in this code and fix it.",
-      "code": [
-        "void createArray() {",
-        "    int* arr = new int[100];",
-        "    // Missing cleanup",
-        "}"
-      ],
-      "options": [
-        "a) The array should be delete[]-ed.",
-        "b) new cannot be used inside a function.",
-        "c) Use free(arr) instead of delete[] arr.",
-        "d) There's no memory leak."
-      ],
-      "answer": "a) The array should be delete[]-ed."
-    },
-    {
-      "question": "What is the output of this code?",
-      "code": [
-        "int x;",
-        "std::cout << x << std::endl;"
-      ],
-      "options": [
-        "a) The program prints 0.",
-        "b) The program crashes.",
-        "c) Undefined behavior; the value of x is garbage.",
-        "d) Compiler error due to uninitialized variable."
-      ],
-      "answer": "c) Undefined behavior; the value of x is garbage."
-    },
-    {
-      "question": "Why does this loop not terminate?",
-      "code": [
-        "int i = 0;",
-        "while (i != 10) {",
-        "    i += 2;",
-        "}"
-      ],
-      "options": [
-        "a) i will never equal 10.",
-        "b) i is reset to 0 inside the loop.",
-        "c) The loop condition is invalid.",
-        "d) Infinite loops are normal in C++."
-      ],
-      "answer": "a) i will never equal 10."
-    },
-    {
-      "question": "Why doesn't this code correctly sort the array?",
-      "code": [
-        "std::vector<int> arr = {5, 3, 8, 1};",
-        "std::sort(arr.begin(), arr.end(), [](int a, int b) { return a > b; });",
-        "for (int num : arr) {",
-        "    std::cout << num << \" \";",
-        "}"
-      ],
-      "options": [
-        "a) The lambda comparator should be return a < b.",
-        "b) std::sort cannot sort std::vector.",
-        "c) The code correctly sorts in descending order.",
-        "d) There's a syntax error in the lambda function."
-      ],
-      "answer": "c) The code correctly sorts in descending order."
-    },
-    {
-      "question": "What's wrong with this code?",
-      "code": [
-        "std::vector<int> vec = {1, 2, 3};",
-        "for (int i = 0; i <= vec.size(); ++i) {",
-        "    std::cout << vec[i] << std::endl;",
-        "}"
-      ],
-      "options": [
-        "a) vec[i] is invalid for i == vec.size().",
-        "b) The loop should use < vec.size() instead of <=.",
-        "c) Both a and b.",
-        "d) No issues with this code."
-      ],
-      "answer": "c) Both a and b."
-    },
-    {
-      "question": "What is the issue with the following code?",
-      "code": [
-        "int num = 5;",
-        "if (num = 10) {",
-        "    std::cout << \"Number is 10\";",
-        "}"
-      ],
-      "options": [
-        "a) The condition assigns 10 to num instead of comparing.",
-        "b) num should not be modified in an if statement.",
-        "c) Replace = with ==.",
-        "d) Both a and c."
-      ],
-      "answer": "d) Both a and c."
-    },
-    {
-      "question": "Identify the problem with this multithreaded code.",
-      "code": [
-        "int counter = 0;",
-        "void incrementCounter() {",
-        "    for (int i = 0; i < 1000; ++i) {",
-        "        counter++;",
-        "    }",
-        "}",
-        "int main() {",
-        "    std::thread t1(incrementCounter);",
-        "    std::thread t2(incrementCounter);",
-        "    t1.join();",
-        "    t2.join();",
-        "    std::cout << counter << std::endl;",
-        "}"
-      ],
-      "options": [
-        "a) Data race on counter due to no synchronization.",
-        "b) counter must be declared volatile.",
-        "c) Use std::atomic<int> or a mutex for thread safety.",
-        "d) Both a and c."
-      ],
-      "answer": "d) Both a and c."
-    },
-    {
-      "question": "What causes undefined behavior in this code?",
-      "code": [
-        "int x = 10;",
-        "int y = x++ + ++x;",
-        "std::cout << y << std::endl;"
-      ],
-      "options": [
-        "a) Multiple modifications to x without a sequence point.",
-        "b) Use of ++ on the same variable twice in one statement.",
-        "c) Both a and b.",
-        "d) No undefined behavior here."
-      ],
-      "answer": "c) Both a and b."
-    }
+const cpp = [  
+  {  
+    "question": "What does this code output?",  
+    "code": [  
+      "auto x = {1, 2};",  
+      "std::cout << x.size();"  
+    ],  
+    "options": [  
+      "a) 2",  
+      "b) 1",  
+      "c) Compiler error",  
+      "d) Undefined behavior"  
+    ],  
+    "answer": "a) 2",  
+    "explanation": "`auto x = {1, 2}` deduces `x` as `std::initializer_list<int>`, which has size 2."  
+  },  
+  {  
+    "question": "What happens here?",  
+    "code": [  
+      "std::string s1 = \"Hello\";",  
+      "std::string&& s2 = std::move(s1);",  
+      "std::cout << s1;"  
+    ],  
+    "options": [  
+      "a) Prints \"Hello\"",  
+      "b) Prints garbage",  
+      "c) Undefined behavior",  
+      "d) Compiler error"  
+    ],  
+    "answer": "a) Prints \"Hello\"",  
+    "explanation": "`std::move` casts to an rvalue reference but doesn't invalidate `s1`; its state is implementation-defined but often unchanged."  
+  },  
+  {  
+    "question": "Debugging challenge: Why does this crash?",  
+    "code": [  
+      "std::vector<int> v = {1, 2, 3};",  
+      "for (auto it = v.begin(); it != v.end(); ++it) {",  
+      "    if (*it % 2 == 0) v.erase(it);",  
+      "}"  
+    ],  
+    "options": [  
+      "a) Invalid iterator after `erase`",  
+      "b) Out-of-bounds access",  
+      "c) Memory leak",  
+      "d) Division by zero"  
+    ],  
+    "answer": "a) Invalid iterator after `erase`",  
+    "explanation": "`erase` invalidates `it`; use `it = v.erase(it)` instead."  
+  },  
+  {  
+    "question": "What is printed?",  
+    "code": [  
+      "int x = 0;",  
+      "int&& y = x++;",  
+      "std::cout << y;"  
+    ],  
+    "options": [  
+      "a) 0",  
+      "b) 1",  
+      "c) Compiler error",  
+      "d) Garbage"  
+    ],  
+    "answer": "c) Compiler error",  
+    "explanation": "Cannot bind an rvalue reference (`y`) to the temporary result of `x++` (an rvalue)."  
+  },  
+  {  
+    "question": "Which function is called?",  
+    "code": [  
+      "void foo(int) { std::cout << \"int\"; }",  
+      "void foo(double) { std::cout << \"double\"; }",  
+      "int main() { foo(3.14f); }"  
+    ],  
+    "options": [  
+      "a) `int`",  
+      "b) `double`",  
+      "c) Ambiguity error",  
+      "d) Undefined behavior"  
+    ],  
+    "answer": "b) `double`",  
+    "explanation": "`float` promotes to `double` over `int` in overload resolution."  
+  },  
+  {  
+    "question": "What is the output?",  
+    "code": [  
+      "struct A {",  
+      "    virtual ~A() { std::cout << \"A\"; }",  
+      "};",  
+      "struct B : A {",  
+      "    ~B() { std::cout << \"B\"; }",  
+      "};",  
+      "int main() { A* ptr = new B(); delete ptr; }"  
+    ],  
+    "options": [  
+      "a) AB",  
+      "b) BA",  
+      "c) A",  
+      "d) Compiler error"  
+    ],  
+    "answer": "a) AB",  
+    "explanation": "Virtual destructor ensures `B::~B()` is called first, then `A::~A()`."  
+  },  
+  {  
+    "question": "What does this code do?",  
+    "code": [  
+      "int x = 10;",  
+      "auto f = [&x]() { return ++x; };",  
+      "std::cout << f() << f();"  
+    ],  
+    "options": [  
+      "a) 11 12",  
+      "b) 12 12",  
+      "c) Undefined behavior",  
+      "d) Compiler error"  
+    ],  
+    "answer": "c) Undefined behavior",  
+    "explanation": "Order of evaluation for `f() << f()` is unspecified, leading to UB."  
+  },  
+  {  
+    "question": "Debugging challenge: Why is there a memory leak?",  
+    "code": [  
+      "class Resource {",  
+      "    int* data;",  
+      "public:",  
+      "    Resource() : data(new int[100]) {}",  
+      "    ~Resource() { delete data; }",  
+      "};",  
+      "int main() { Resource res; }"  
+    ],  
+    "options": [  
+      "a) `delete data` should be `delete[] data`",  
+      "b) Missing copy constructor",  
+      "c) Stack overflow",  
+      "d) No leak"  
+    ],  
+    "answer": "a) `delete data` should be `delete[] data`",  
+    "explanation": "Mismatched `new[]`/`delete` causes UB and potential leaks."  
+  },  
+  {  
+    "question": "What is printed?",  
+    "code": [  
+      "template<typename T>",  
+      "void bar(T a, T b) { std::cout << \"T\"; }",  
+      "void bar(int a, double b) { std::cout << \"ID\"; }",  
+      "int main() { bar(1, 2.0f); }"  
+    ],  
+    "options": [  
+      "a) T",  
+      "b) ID",  
+      "c) Ambiguity error",  
+      "d) Compiler error"  
+    ],  
+    "answer": "b) ID",  
+    "explanation": "Overload resolution prefers non-template `void bar(int, double)` over template deduction (`T=float`)."  
+  },  
+  {  
+    "question": "What is the result?",  
+    "code": [  
+      "constexpr int f() {",  
+      "    int x = 5;",  
+      "    return x++;",  
+      "}",  
+      "int main() { std::cout << f(); }"  
+    ],  
+    "options": [  
+      "a) 5",  
+      "b) 6",  
+      "c) Compiler error",  
+      "d) Undefined behavior"  
+    ],  
+    "answer": "c) Compiler error",  
+    "explanation": "Modifying a variable (`x++`) in a `constexpr` function is allowed only in C++14 and later."  
+  }  
 ];
 
 const py = [
-    {
-      "question": "Why does this code raise a ZeroDivisionError?",
-      "code": [
-        "def divide(a, b):",
-        "    return a / b",
-        "",
-        "result = divide(10, 0)",
-        "print(result)"
-      ],
-      "options": [
-        "a) b cannot be 0 because division by zero is not allowed.",
-        "b) The function divide is not defined correctly.",
-        "c) The print statement is incorrect.",
-        "d) There is no error in the code."
-      ],
-      "answer": "a) b cannot be 0 because division by zero is not allowed."
-    },
-    {
-      "question": "Why does this code give a TypeError?",
-      "code": [
-        "def add(a, b):",
-        "    return a + b",
-        "",
-        "result = add(5, '10')",
-        "print(result)"
-      ],
-      "options": [
-        "a) You cannot add an integer and a string directly.",
-        "b) The function add is not defined correctly.",
-        "c) The print statement is causing the error.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) You cannot add an integer and a string directly."
-    },
-    {
-      "question": "Why does this code cause a NameError?",
-      "code": [
-        "def greet():",
-        "    print(message)",
-        "",
-        "greet()"
-      ],
-      "options": [
-        "a) The variable 'message' is not defined.",
-        "b) The function greet() must have an argument.",
-        "c) The print statement is incorrect.",
-        "d) Functions cannot access variables outside their scope."
-      ],
-      "answer": "a) The variable 'message' is not defined."
-    },
-    {
-      "question": "Why does this code throw an AttributeError?",
-      "code": [
-        "my_list = [1, 2, 3]",
-        "my_list.append(4)",
-        "my_list.add(5)"
-      ],
-      "options": [
-        "a) The method 'add()' does not exist for lists.",
-        "b) The list is immutable.",
-        "c) The 'append()' method is incorrect.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) The method 'add()' does not exist for lists."
-    },
-    {
-      "question": "Why does this code cause an IndexError?",
-      "code": [
-        "my_list = [1, 2, 3]",
-        "print(my_list[3])"
-      ],
-      "options": [
-        "a) Index 3 is out of range for the list.",
-        "b) The list is empty.",
-        "c) The print statement is incorrect.",
-        "d) Lists in Python start at index 1."
-      ],
-      "answer": "a) Index 3 is out of range for the list."
-    },
-    {
-      "question": "Why does this code fail with a KeyError?",
-      "code": [
-        "my_dict = {'a': 1, 'b': 2}",
-        "print(my_dict['c'])"
-      ],
-      "options": [
-        "a) The key 'c' does not exist in the dictionary.",
-        "b) The dictionary is empty.",
-        "c) The print statement is incorrect.",
-        "d) Dictionaries cannot have keys of type string."
-      ],
-      "answer": "a) The key 'c' does not exist in the dictionary."
-    },
-    {
-      "question": "Why does this code produce a SyntaxError?",
-      "code": [
-        "def func():",
-        "    print('Hello'",
-        ""
-      ],
-      "options": [
-        "a) The closing parenthesis is missing in the print statement.",
-        "b) The function name 'func' is invalid.",
-        "c) Python functions must return a value.",
-        "d) There is no error, the code runs fine."
-      ],
-      "answer": "a) The closing parenthesis is missing in the print statement."
-    },
-    {
-      "question": "Why does this code raise a ValueError?",
-      "code": [
-        "int_value = int('abc')",
-        "print(int_value)"
-      ],
-      "options": [
-        "a) The string 'abc' cannot be converted to an integer.",
-        "b) The print statement is incorrect.",
-        "c) Python cannot convert strings to integers.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) The string 'abc' cannot be converted to an integer."
-    },
-    {
-      "question": "Why does this code raise an IndentationError?",
-      "code": [
-        "def func():",
-        "print('Hello')"
-      ],
-      "options": [
-        "a) The body of the function is not indented.",
-        "b) The print statement is incorrect.",
-        "c) The function name 'func' is invalid.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) The body of the function is not indented."
-    },
-    {
-      "question": "Why does this code raise a TypeError?",
-      "code": [
-        "def multiply(a, b):",
-        "    return a * b",
-        "",
-        "result = multiply(5, None)",
-        "print(result)"
-      ],
-      "options": [
-        "a) You cannot multiply an integer with None.",
-        "b) The function multiply is not defined correctly.",
-        "c) The print statement is causing the error.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) You cannot multiply an integer with None."
-    }
+  {
+    "question": "What does this code output?",
+    "code": [
+      "def func(lst=[]):",
+      "    lst.append(1)",
+      "    print(len(lst))",
+      "func()",
+      "func()"
+    ],
+    "options": [
+      "a) 1 1",
+      "b) 1 2",
+      "c) 2 2",
+      "d) Error"
+    ],
+    "answer": "b) 1 2",
+    "explanation": "Default mutable arguments (like `lst=[]`) are created once. Subsequent calls reuse the same list."
+  },
+  {
+    "question": "What is printed?",
+    "code": [
+      "funcs = [lambda: i for i in range(3)]",
+      "for f in funcs:",
+      "    print(f(), end=' ')"
+    ],
+    "options": [
+      "a) 0 1 2",
+      "b) 2 2 2",
+      "c) 3 3 3",
+      "d) Error"
+    ],
+    "answer": "b) 2 2 2",
+    "explanation": "Lambdas capture the variable `i`, not its value. By the time they execute, `i` is 2."
+  },
+  {
+    "question": "What does `print(a is b)` output?",
+    "code": [
+      "a = 256",
+      "b = 256",
+      "print(a is b, end=' ')",
+      "c = 257",
+      "d = 257",
+      "print(c is d)"
+    ],
+    "options": [
+      "a) True True",
+      "b) True False",
+      "c) False False",
+      "d) Depends on Python"
+    ],
+    "answer": "b) True False",
+    "explanation": "Python caches integers in [-5, 256]. `257` creates new objects (behavior may vary in REPL vs. scripts)."
+  },
+  {
+    "question": "Debugging: Why does this crash?",
+    "code": [
+      "a = [[]] * 3",
+      "a[0].append(1)",
+      "print(a)"
+    ],
+    "options": [
+      "a) [[1], [1], [1]] is printed (no crash)",
+      "b) All sublists share the same reference",
+      "c) IndexError",
+      "d) Memory leak"
+    ],
+    "answer": "b) All sublists share the same reference",
+    "explanation": "`[[]] * 3` creates 3 references to the same inner list. Appending to one affects all."
+  },
+  {
+    "question": "What is the result?",
+    "code": [
+      "x = [1, 2, 3]",
+      "y = x",
+      "y.append(4)",
+      "print(x)"
+    ],
+    "options": [
+      "a) [1, 2, 3]",
+      "b) [1, 2, 3, 4]",
+      "c) Error",
+      "d) [4, 3, 2, 1]"
+    ],
+    "answer": "b) [1, 2, 3, 4]",
+    "explanation": "Assignment `y = x` creates a reference (not a copy). Changes to `y` affect `x`."
+  },
+  {
+    "question": "What does this code output?",
+    "code": [
+      "print(3 * 'ab' + 'c')"
+    ],
+    "options": [
+      "a) ababc",
+      "b) ababab c",
+      "c) abababc",
+      "d) Error"
+    ],
+    "answer": "c) abababc",
+    "explanation": "`3 * 'ab'` evaluates to `ababab`, then `+ 'c'` appends `c`."
+  },
+  {
+    "question": "Debugging: Why does this raise an error?",
+    "code": [
+      "d = {[1, 2]: 'value'}"
+    ],
+    "options": [
+      "a) List cannot be a key",
+      "b) Syntax error",
+      "c) Key not found",
+      "d) Hash collision"
+    ],
+    "answer": "a) List cannot be a key",
+    "explanation": "Dictionary keys must be hashable. Lists are mutable and unhashable."
+  },
+  {
+    "question": "What is printed?",
+    "code": [
+      "a = (1, 2, [3])",
+      "a[2].append(4)",
+      "print(a)"
+    ],
+    "options": [
+      "a) (1, 2, [3, 4])",
+      "b) Error (tuple is immutable)",
+      "c) (1, 2, 4)",
+      "d) (1, 2, [3])"
+    ],
+    "answer": "a) (1, 2, [3, 4])",
+    "explanation": "Tuples are immutable, but their mutable elements (like the inner list) can be modified."
+  },
+  {
+    "question": "What does `print(0.1 + 0.2 == 0.3)` output?",
+    "code": [],
+    "options": [
+      "a) True",
+      "b) False",
+      "c) Depends on hardware",
+      "d) Error"
+    ],
+    "answer": "b) False",
+    "explanation": "Floating-point precision errors: `0.1 + 0.2` ≈ `0.30000000000000004`, not exactly `0.3`."
+  },
+  {
+    "question": "Debugging: Why does this loop infinitely?",
+    "code": [
+      "i = 1",
+      "while i < 5:",
+      "    if i % 2 == 0:",
+      "        continue",
+      "    i += 1"
+    ],
+    "options": [
+      "a) `i` never updates when even",
+      "b) Off-by-one error",
+      "c) Syntax error",
+      "d) `continue` skips `i += 1`"
+    ],
+    "answer": "a) `i` never updates when even",
+    "explanation": "When `i` is even, `continue` skips `i += 1`, causing an infinite loop."
+  }
 ]
-  
+
 const java = [
-    {
-      "question": "Why does this code throw a NullPointerException?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        String str = null;",
-        "        System.out.println(str.length());",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) The variable 'str' is not initialized.",
-        "b) You cannot call methods on a null object.",
-        "c) The length() method does not exist for Strings.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "b) You cannot call methods on a null object."
-    },
-    {
-      "question": "Why does this code fail to compile?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        int number = \"123\";",
-        "        System.out.println(number);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) Strings cannot be assigned to integers directly.",
-        "b) The variable 'number' is not initialized.",
-        "c) The println() method is incorrect.",
-        "d) No error, the code compiles and runs fine."
-      ],
-      "answer": "a) Strings cannot be assigned to integers directly."
-    },
-    {
-      "question": "Why does this code throw an ArrayIndexOutOfBoundsException?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        int[] arr = {1, 2, 3};",
-        "        System.out.println(arr[3]);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) The array index is out of bounds.",
-        "b) The array is not initialized.",
-        "c) The print statement is incorrect.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) The array index is out of bounds."
-    },
-    {
-      "question": "Why does this code fail with a ClassCastException?",
-      "code": [
-        "import java.util.ArrayList;",
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        ArrayList list = new ArrayList();",
-        "        list.add(\"Hello\");",
-        "        Integer num = (Integer) list.get(0);",
-        "        System.out.println(num);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) You cannot cast a String to an Integer.",
-        "b) The ArrayList is not initialized properly.",
-        "c) The list does not support generics.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) You cannot cast a String to an Integer."
-    },
-    {
-      "question": "Why does this code fail with a NumberFormatException?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        String number = \"abc\";",
-        "        int value = Integer.parseInt(number);",
-        "        System.out.println(value);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) The string 'abc' cannot be parsed to an integer.",
-        "b) The parseInt method does not exist in Java.",
-        "c) Strings cannot be converted to integers.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) The string 'abc' cannot be parsed to an integer."
-    },
-    {
-      "question": "Why does this code throw an IllegalArgumentException?",
-      "code": [
-        "import java.util.Scanner;",
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        Scanner scanner = new Scanner(System.in);",
-        "        System.out.print(\"Enter a positive number: \");",
-        "        int number = scanner.nextInt();",
-        "        if (number < 0) {",
-        "            throw new IllegalArgumentException(\"Number must be positive\");",
-        "        }",
-        "        System.out.println(\"Number: \" + number);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) A negative number was entered.",
-        "b) Scanner does not support integer inputs.",
-        "c) IllegalArgumentException is not a valid exception.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) A negative number was entered."
-    },
-    {
-      "question": "Why does this code fail with a compilation error?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        System.out.println(\"Hello World\")",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) Missing semicolon in the print statement.",
-        "b) The main method is not defined correctly.",
-        "c) The class name is invalid.",
-        "d) No error, the code compiles and runs fine."
-      ],
-      "answer": "a) Missing semicolon in the print statement."
-    },
-    {
-      "question": "Why does this code fail to compile?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        final int x = 10;",
-        "        x = 20;",
-        "        System.out.println(x);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) A final variable cannot be reassigned.",
-        "b) The variable x is not initialized.",
-        "c) The final keyword is not valid for integers.",
-        "d) No error, the code compiles and runs fine."
-      ],
-      "answer": "a) A final variable cannot be reassigned."
-    },
-    {
-      "question": "Why does this code throw an UnsupportedOperationException?",
-      "code": [
-        "import java.util.Arrays;",
-        "import java.util.List;",
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        List<String> list = Arrays.asList(\"A\", \"B\", \"C\");",
-        "        list.add(\"D\");",
-        "        System.out.println(list);",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) Arrays.asList() creates a fixed-size list.",
-        "b) The list is null.",
-        "c) You cannot add elements to a list in Java.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) Arrays.asList() creates a fixed-size list."
-    },
-    {
-      "question": "Why does this code cause a StackOverflowError?",
-      "code": [
-        "public class Main {",
-        "    public static void main(String[] args) {",
-        "        recursiveMethod();",
-        "    }",
-        "",
-        "    public static void recursiveMethod() {",
-        "        recursiveMethod();",
-        "    }",
-        "}"
-      ],
-      "options": [
-        "a) Infinite recursion leads to a stack overflow.",
-        "b) The method recursiveMethod() is not defined correctly.",
-        "c) The main method should not call another method.",
-        "d) No error, the code runs fine."
-      ],
-      "answer": "a) Infinite recursion leads to a stack overflow."
-    }
+  {
+    "question": "What does this code output?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        System.out.println(2 + 3 + \"5\");",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) 55",
+      "b) 235",
+      "c) 10",
+      "d) Error"
+    ],
+    "answer": "a) 55",
+    "explanation": "`2 + 3` is evaluated first (resulting in `5`), then concatenated with `\"5\"` to produce `\"55\"`."
+  },
+  {
+    "question": "What is printed?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        String s1 = new String(\"Hello\");",
+      "        String s2 = new String(\"Hello\");",
+      "        System.out.println(s1 == s2);",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) true",
+      "b) false",
+      "c) Error",
+      "d) Depends on JVM"
+    ],
+    "answer": "b) false",
+    "explanation": "`==` compares references. `s1` and `s2` are different objects, even though their content is the same."
+  },
+  {
+    "question": "What does this code output?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        int x = 5;",
+      "        System.out.println(x > 2 ? x < 4 ? 10 : 8 : 7);",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) 10",
+      "b) 8",
+      "c) 7",
+      "d) Error"
+    ],
+    "answer": "b) 8",
+    "explanation": "Ternary operators are evaluated left-to-right: `x > 2` is true, so `x < 4 ? 10 : 8` is evaluated. Since `x < 4` is false, `8` is returned."
+  },
+  {
+    "question": "Debugging: Why does this throw a `NullPointerException`?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        String s = null;",
+      "        System.out.println(s.length());",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) `s` is not initialized",
+      "b) `s` is null",
+      "c) `length()` cannot be called on `null`",
+      "d) Syntax error"
+    ],
+    "answer": "c) `length()` cannot be called on `null`",
+    "explanation": "Calling a method on a `null` reference throws a `NullPointerException`."
+  },
+  {
+    "question": "What is printed?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        int[] arr = {1, 2, 3};",
+      "        System.out.println(arr[3]);",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) 3",
+      "b) 0",
+      "c) Error (ArrayIndexOutOfBoundsException)",
+      "d) null"
+    ],
+    "answer": "c) Error (ArrayIndexOutOfBoundsException)",
+    "explanation": "Accessing `arr[3]` is out of bounds since the array has indices `0` to `2`."
+  },
+  {
+    "question": "What does this code output?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        System.out.println(Math.min(Double.MIN_VALUE, 0.0));",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) 0.0",
+      "b) Double.MIN_VALUE",
+      "c) Error",
+      "d) Depends on JVM"
+    ],
+    "answer": "a) 0.0",
+    "explanation": "`Double.MIN_VALUE` is the smallest positive value (≈4.9e-324), so `0.0` is smaller."
+  },
+  {
+    "question": "What is printed?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        String s1 = \"Hello\";",
+      "        String s2 = \"Hello\";",
+      "        System.out.println(s1 == s2);",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) true",
+      "b) false",
+      "c) Error",
+      "d) Depends on JVM"
+    ],
+    "answer": "a) true",
+    "explanation": "String literals are interned, so `s1` and `s2` refer to the same object in the string pool."
+  },
+  {
+    "question": "Debugging: Why does this throw a `ClassCastException`?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        Object obj = new Integer(5);",
+      "        String s = (String) obj;",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) `Integer` cannot be cast to `String`",
+      "b) `obj` is not a `String`",
+      "c) `Integer` is not a subclass of `String`",
+      "d) Syntax error"
+    ],
+    "answer": "a) `Integer` cannot be cast to `String`",
+    "explanation": "Casting an `Integer` to a `String` is invalid and throws a `ClassCastException`."
+  },
+  {
+    "question": "What does this code output?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        int x = 10;",
+      "        System.out.println(x++ + ++x);",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) 20",
+      "b) 21",
+      "c) 22",
+      "d) Error"
+    ],
+    "answer": "c) 22",
+    "explanation": "`x++` returns `10` (then `x` becomes `11`), and `++x` returns `12` (after incrementing `x` to `12`). The sum is `10 + 12 = 22`."
+  },
+  {
+    "question": "What is printed?",
+    "code": [
+      "public class Main {",
+      "    public static void main(String[] args) {",
+      "        System.out.println(0.1 + 0.2 == 0.3);",
+      "    }",
+      "}"
+    ],
+    "options": [
+      "a) true",
+      "b) false",
+      "c) Error",
+      "d) Depends on JVM"
+    ],
+    "answer": "b) false",
+    "explanation": "Floating-point precision errors: `0.1 + 0.2` ≈ `0.30000000000000004`, not exactly `0.3`."
+  }
 ]
+
 const generate = ()=>{
     return Math.floor(Math.random() * (101));
 }

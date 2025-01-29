@@ -24,7 +24,7 @@ const Echo = () => {
     return (
     <div className='relative bg-[#11192D] h-[100vh] overflow-x-hidden w-full min-w-[320px]'>
         <div className='bg-[#1e8296] absolute top-[4rem] -z-5 left-[-35rem] h-[15.25rem] w-[15.25rem] rounded-full blur-[10rem] sm:w-[68.75rem]'></div>
-        <div className='py-4 w-full flex flex-col items-center justify-between h-full'>
+        <div className='py-4 w-full flex flex-col items-center justify-between h-[100vh]'>
             <Header setChat={setChat} setMode={setMode} setSession={setSession} setPlaceholder={setPlaceholder} setText={setText}/>
             <Chat isLoading={isLoading} loading={loading} chat={chat}/>
             <Query setSession={setSession} setChat={setChat} setMode={setMode} setText={setText} setPlaceholder={setPlaceholder} setPlatform={setPlatform} mode={mode} platform={platform} session={session} text={text} placeholder={placeholder} setIsloading={setIsloading} setLoading={setLoading}/>
