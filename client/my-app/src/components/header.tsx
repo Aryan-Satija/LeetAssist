@@ -69,7 +69,7 @@ const Header = ({setChat, setMode, setText, setPlaceholder, setSession}: props) 
       const lastDate = new Date(user.lastPlayed);
       const currentDate = new Date();
       const oneDayMillis = 24*60*60*1000;
-      if(currentDate.getTime() - lastDate.getTime() >= oneDayMillis) return true;
+      if(currentDate.getTime() - lastDate.getTime() <= oneDayMillis) return true;
       return false
     }
   return (
